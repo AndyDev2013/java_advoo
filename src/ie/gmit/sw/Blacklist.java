@@ -44,6 +44,10 @@ public class Blacklist
 	    	{
 				e.printStackTrace();
 			} 
-		}			
+		}	
+		else
+		{
+			System.out.println("Not valid blacklist file");
+		}
 	}
 }

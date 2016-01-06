@@ -14,10 +14,12 @@ public class Worker
 		wordValueMap = new HashMap<String,Integer>();
 		swissArmy = new SwissArmy();
 		fuImporter = new FileUrlImporter();
-		blacklist = new Blacklist();
 		
-		if(swissArmy.isFile(fileToBlackList))		
+		if(swissArmy.isFile(fileToBlackList))
+		{
+			blacklist = new Blacklist();
 			blacklist.FileToList(fileToBlackList);
+		}
 		
 		fuImporter.Importer(blacklist,fileOrUrl);
 		
