@@ -6,8 +6,5 @@ public class Runner
 	{	
 		UserUI projectUI = new UserUI();
 		projectUI.Init();
-		
-		
-		
 	}
 }

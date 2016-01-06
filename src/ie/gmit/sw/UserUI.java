@@ -78,11 +78,14 @@ public class UserUI
 	
 	public void OkButton()
 	{
-		SwissArmy swiss = new SwissArmy();
+		System.out.println("Submitted file/url location");
 		
-		boolean flag = swiss.validStr(textfield.getText());
-		swiss.validStrDialog(textfield.getText());
-		
-		System.out.println(flag);
+		Worker worker = new Worker();
+		worker.doWork(getTextField());
 	}	
+	
+	public String getTextField()
+	{
+		return textfield.getText();
+	}
 }
