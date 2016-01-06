@@ -8,10 +8,13 @@ public class FileUrlImporter
 {
 	private SwissArmy swissArmy;
 	private WordValueMap wordValueMap;
+	private Blacklist blacklist;
 	
-	public void Importer(String fileOrUrl)
+	public void Importer(Blacklist blacklist,String fileOrUrl)
 	{
-		System.out.println("Trying to import");
+		System.out.println("Trying to import");	
+		
+		this.blacklist = blacklist;
 		
 		swissArmy = new SwissArmy();
 		wordValueMap = new WordValueMap();
@@ -22,7 +25,9 @@ public class FileUrlImporter
 				ReadFile(fileOrUrl);
 			else
 				ReadUrl(fileOrUrl);
-		}		
+		}	
+		else
+			System.out.println("Bad file location, doesn't exist or isn't a valid file");
 	}
 		
     private void ReadFile(String fileOrUrl)
@@ -41,7 +46,13 @@ public class FileUrlImporter
 
 				 for ( String word : arr) 
 				 {
-					 wordValueMap.add(word);
+					 if(blacklist != null)
+					 {
+						 if(!(blacklist.blackListContains(word)))					 
+							 wordValueMap.add(word);
+					 }
+					 else
+						 wordValueMap.add(word); 
 				 }
 			}
 			

@@ -9,8 +9,7 @@ public class UserUIDialog
 	private Frame frame = new Frame();
 	
 	public UserUIDialog(String message,String title,UserUIMessageType uim)
-	{
-		
+	{		
 		if(message != null && !(message.equals("")))
 		{		
 			if(uim == UserUIMessageType.ERROR)

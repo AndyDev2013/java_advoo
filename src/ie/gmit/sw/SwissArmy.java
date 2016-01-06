@@ -1,24 +1,21 @@
 package ie.gmit.sw;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import org.apache.commons.validator.routines.UrlValidator;
 
 public class SwissArmy 
 {
 	public boolean isUrl(String possibleUrl)
 	{
-		try 
-		{
-		  @SuppressWarnings("unused")
-		  URL url = new URL(possibleUrl);
-		} 
-		catch (MalformedURLException e)
-		{
-			return false;
-		}
+		String[] schemes = {"http","https"};
 		
-		return true;
+		UrlValidator urlValidator = new UrlValidator(schemes);
+		
+		if (urlValidator.isValid(possibleUrl)) 
+		   return true;
+		else
+		   return false;
 	
 	}// Tells whether the string is a possible Url or not
 	
@@ -39,9 +36,13 @@ public class SwissArmy
 		boolean isUrl = isUrl(isFileOrUrl);
 		
 		if(isFile || isUrl)
+		{
 			return true;
+		}
 		else
+		{
 			return false;
+		}
 	}
 	
 	public void validStrDialog(String isFileOrUrl)
@@ -59,6 +60,4 @@ public class SwissArmy
 		else
 			uid = new UserUIDialog(warningTitle,badMsg,UserUIMessageType.ERROR);		
 	}
-	
-	
 }
