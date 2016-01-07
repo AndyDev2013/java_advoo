@@ -1,6 +1,8 @@
 package ie.gmit.sw;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 public class WordValueMap 
@@ -29,12 +31,32 @@ public class WordValueMap
 		return wordValueMap.size();
 	}
 	
-	public String mostUsed()
+	public List<String> getOrderedList()
+	{
+		return this.getOrderedKeys(wordValueMap);
+	}
+	
+	public List<String> getOrderedKeys(HashMap<String,Integer> map)
+	{
+		List<String> arrList = new ArrayList<String>();
+	
+		HashMap<String,Integer> temp = new HashMap<String,Integer>(map);
+						
+		for(Entry<String, Integer> entry : map.entrySet()) 
+		{			
+			arrList.add(highestKey(temp));			
+			temp.remove(highestKey(temp));
+		}
+		
+		return arrList;
+	}
+	
+	public String highestKey(HashMap<String,Integer> map)
 	{
 		String highKey = "";
 		int highValue = 0;
 		
-		for(Entry<String, Integer> entry : wordValueMap.entrySet()) 
+		for(Entry<String, Integer> entry : map.entrySet()) 
 		{
 			if(entry.getValue() > highValue)
 			{
@@ -46,9 +68,24 @@ public class WordValueMap
 		return highKey;
 	}
 	
+	public void printList(List<String> list)
+	{
+		System.out.println("\nList\n");
+		
+		for(String s : list)
+		{
+			System.out.println(s);
+		}
+	}
+	
 	public int mostUsedCount()
 	{
-		return wordValueMap.get(mostUsed());
+		return wordValueMap.get(highestKey(wordValueMap));
+	}
+	
+	public String mostUsedWord()
+	{
+		return highestKey(wordValueMap); 
 	}
 	
 	public String firstTen()
@@ -72,5 +109,8 @@ public class WordValueMap
 		return firstTen;
 	}
 	
-	
+	public HashMap<String, Integer> getStrValMap()
+	{
+		return this.wordValueMap;
+	}
 }

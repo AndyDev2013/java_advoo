@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.UrlValidator;
@@ -18,7 +19,7 @@ public class Importer implements Parsable
 	private WordValueMap wordValueMap;
 	private HashSet<String> blacklist;
 	
-	public void ImportWords(String fileOrUrl)
+	public List<String> ImportWords(String fileOrUrl)
 	{
     	System.out.println("\n--- WordCloudFile ---");
 		System.out.println("\nTrying to import wordcloud file: " + "\"" + fileOrUrl + "\"");
@@ -28,9 +29,9 @@ public class Importer implements Parsable
 		if(isFileOrUrl(fileOrUrl))
 		{
 			if(isFile(fileOrUrl))
-				ReadFile(fileOrUrl);
+				return ReadFile(fileOrUrl);
 			else
-				ReadUrl(fileOrUrl);
+				return ReadUrl(fileOrUrl);
 		}	
 		else
 		{
@@ -44,10 +45,10 @@ public class Importer implements Parsable
 			System.out.println(message);
 			System.out.println(otherMessage);
 			
-			ReadFile(fileOrUrl);
-			
 			if(Globals.getInstance().getIsGui())
 				new UserUIDialog(message + "\n" + otherMessage, UserUIMessageType.WARNING);
+		
+			return ReadFile(fileOrUrl);
 		}
 	}
 	
@@ -95,7 +96,7 @@ public class Importer implements Parsable
 		} 	
 	}
 	
-    private void ReadFile(String fileOrUrl)
+    private List<String> ReadFile(String fileOrUrl)
     {
     	System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
     	
@@ -122,20 +123,31 @@ public class Importer implements Parsable
 			}
 			
 			System.out.println("Populated Map: " + wordValueMap.size());
-			System.out.println(wordValueMap.firstTen());
+			
+			return wordValueMap.getOrderedList();
 		} 
     	catch (IOException e) 
     	{
-    		String message = "WordCloud file at given location not found";
-    		
+			String message = "WordCloud file/url isn't valid.";
+			String otherMessage;
+			
+			fileOrUrl = Globals.getInstance().getBackupWordCloud();
+			
+			otherMessage = "Using the internal backup file: " + "\"" + fileOrUrl + "\"\n";
+				
+			System.out.println(message);
+			System.out.println(otherMessage);
+			
+			ReadFile(fileOrUrl);
+			
 			if(Globals.getInstance().getIsGui())
-				new UserUIDialog(message,UserUIMessageType.ERROR);
-			else
-				System.out.println(message);
-		} 
+				new UserUIDialog(message + "\n" + otherMessage, UserUIMessageType.WARNING);
+			
+			return wordValueMap.getOrderedList(); 
+		}	    	
     }	
     
-    public void ReadUrl(String urlLocation)
+    public List<String> ReadUrl(String urlLocation)
     {
     	System.out.println("Trying to read URL: " + "\"" + urlLocation + "\"\n");
 
@@ -166,23 +178,24 @@ public class Importer implements Parsable
 			}
 			
 			System.out.println("Populated Map: " + wordValueMap.size());
-			System.out.println(wordValueMap.firstTen());
-			System.out.println("Best: " + wordValueMap.mostUsed() + " : " + wordValueMap.mostUsedCount());
+			
+			return wordValueMap.getOrderedList();						
 		}
     	catch (IOException e) 
     	{
     		String message = "Unable to read url";
     		String otherMessage;
 
-    		urlLocation = Globals.getInstance().getBackupStopwords();
+    		urlLocation = Globals.getInstance().getBackupWordCloud();
     		
-    		otherMessage = "Using the internal backup file: " + "\"" + urlLocation + "\"\n";
-    		
+    		otherMessage = "Using the internal backup file: " + "\"" + urlLocation + "\"\n";    		
     		
 			if(Globals.getInstance().getIsGui())
 				new UserUIDialog(message + "\n" + otherMessage,UserUIMessageType.ERROR);
 			else
 				System.out.println(message + "\n" + otherMessage);
+			
+			return ReadFile(urlLocation);
 		} 	
     }
 	
@@ -252,5 +265,10 @@ public class Importer implements Parsable
 	    }
     	    	
     	return str;
+    }
+    
+    public WordValueMap getWordValueMap()
+    {
+    	return this.wordValueMap;
     }
 }
