@@ -79,7 +79,10 @@ public class Importer implements Parsable
 				 for ( String word : arr) 
 				 {
 					 if(!(blacklist.contains(word)) && !word.equals(""))
+					 {
+						 word = word.toUpperCase();
 						 blacklist.add(word);
+					 }
 				 }
 			}
 			
@@ -167,13 +170,16 @@ public class Importer implements Parsable
 				 {
 					 word = CleanStr(word);
 					 
-					 if(blacklist != null)
-					 {
-						 if(!(blacklist.contains(word)) && !word.equals(""))					 
-							 wordValueMap.add(word);
+					 if(word != null)
+					 {						 
+						 if(blacklist != null)
+						 {
+							 if(!(blacklist.contains(word)) && !word.equals(""))					 
+								 wordValueMap.add(word);
+						 }
+						 else
+							 wordValueMap.add(word); 
 					 }
-					 else
-						 wordValueMap.add(word); 
 				 }
 			}
 			
@@ -240,31 +246,17 @@ public class Importer implements Parsable
     
     private String CleanStr(String str)
     {
-    	if(str != null && str != "" && str.length() > 0)
+    	if(str != null && str != "" && str.length() > 1)
     	{    	
 	    	String word = str;
-	    	char[] wordArr = new char[str.length()];
 	    	
-	    	word = str.replaceAll("[^A-Za-z0-9 ]", "");    	
-	    	word = word.toLowerCase();	    	
+	    	word = str.replaceAll("[^A-Za-z ]", "");    	
+	    	word = word.toUpperCase();    
 	    	
-	    	wordArr = word.toCharArray();
-	    	
-	    	if(wordArr.length > 0)
-	    	{	    	
-	    		if(Character.isAlphabetic(wordArr[0]))
-	    		{
-	    			String temp;
-	    			
-	    			wordArr[0] = Character.toUpperCase(wordArr[0]);	   		
-	    			temp = new String(wordArr);
-	    			
-	    			return temp;
-	    		}
-	    	}	    	
+	    	return word; 	
 	    }
-    	    	
-    	return str;
+    	else    		   	    	
+    		return null;
     }
     
     public WordValueMap getWordValueMap()

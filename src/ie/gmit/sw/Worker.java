@@ -19,7 +19,9 @@ public class Worker
 		worldvaluemap = importer.getWordValueMap();
 		orderedWordList = worldvaluemap.getOrderedList();
 		map = worldvaluemap.getStrValMap();
-						
+				
+		System.out.println();
+		
 		for(String s : orderedWordList)
 		{
 			System.out.println(s + " " + map.get(s));
