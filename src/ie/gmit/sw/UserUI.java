@@ -1,7 +1,7 @@
 package ie.gmit.sw;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +12,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 public class UserUI 
 {
@@ -21,6 +20,7 @@ public class UserUI
 	private int FIELD_HIGH = 25;
 	private int MIN_BUFF = 3;
 	private int BORDER = 4;
+	private int LABELWI = 110;
 	
 	private JFrame jFrame;
 	private JPanel jPanel;
@@ -28,19 +28,35 @@ public class UserUI
 	private JMenu menu;		
 	private JMenuItem menuItem;
 	private JButton okButton;
-	private TextField textfieldFileUrl;
-	private TextField textfieldBlackListFile;
+	private TextField txt_wordCloudFileUrl;
+	private TextField txt_blackListFileUrl;
+	private Label wordCloudLabel;
+	private Label blackListLabel;
 	
 	public void Init()
+	{
+		BuildUI();
+	}
+	
+	public void Init(String bl, String cl)
+	{
+		BuildUI();
+		txt_blackListFileUrl.setText(bl);
+		txt_wordCloudFileUrl.setText(cl);		
+	}
+	
+	public void BuildUI()
 	{			
-		jFrame = new JFrame("Word Cloud Application");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		jFrame.setPreferredSize(new Dimension(WI,HI));
-				
+		jFrame = new JFrame("Word Cloud Application");				
 		jPanel = new JPanel();
 		menuBar = new JMenuBar();
 		menu = new JMenu("?");
 		menuItem = new JMenuItem("About", null);
+		wordCloudLabel= new Label("WordCloud File/Url: ");
+		blackListLabel= new Label("Blacklist File: ");		
+
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		jFrame.setPreferredSize(new Dimension(WI,HI));
 		
 		jFrame.add(jPanel);
 		jPanel.setLayout(null);
@@ -53,18 +69,28 @@ public class UserUI
 		okButton.setSize(new Dimension(WI - (MIN_BUFF * BORDER),FIELD_HIGH));
 		okButton.setLocation(MIN_BUFF, (FIELD_HIGH * 2) + MIN_BUFF * 3);
 		jPanel.add(okButton);
+
+		txt_blackListFileUrl = new TextField("");
+		txt_blackListFileUrl.setPreferredSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
+		txt_blackListFileUrl.setSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
+		txt_blackListFileUrl.setLocation(MIN_BUFF + LABELWI, MIN_BUFF + FIELD_HIGH);
+		jPanel.add(txt_blackListFileUrl);
 		
-		textfieldFileUrl = new TextField("Enter a URL or FilePath here for the word map you wish to create");
-		textfieldFileUrl.setPreferredSize(new Dimension(WI - (MIN_BUFF * BORDER),FIELD_HIGH));
-		textfieldFileUrl.setSize(new Dimension(WI - (MIN_BUFF * BORDER),FIELD_HIGH));
-		textfieldFileUrl.setLocation(MIN_BUFF, MIN_BUFF);
-		jPanel.add(textfieldFileUrl);
+		txt_wordCloudFileUrl = new TextField("http://mentalfloss.com/section/lists");
+		txt_wordCloudFileUrl.setPreferredSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
+		txt_wordCloudFileUrl.setSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
+		txt_wordCloudFileUrl.setLocation(MIN_BUFF + LABELWI, MIN_BUFF);
+		jPanel.add(txt_wordCloudFileUrl);
 		
-		textfieldBlackListFile = new TextField("Enter a file path to a file of blacklist words");
-		textfieldBlackListFile.setPreferredSize(new Dimension(WI - (MIN_BUFF * BORDER),FIELD_HIGH));
-		textfieldBlackListFile.setSize(new Dimension(WI - (MIN_BUFF * BORDER),FIELD_HIGH));
-		textfieldBlackListFile.setLocation(MIN_BUFF, MIN_BUFF + FIELD_HIGH);
-		jPanel.add(textfieldBlackListFile);
+		wordCloudLabel.setPreferredSize(new Dimension(LABELWI,FIELD_HIGH));
+		wordCloudLabel.setSize(new Dimension(LABELWI,FIELD_HIGH));
+		wordCloudLabel.setLocation(MIN_BUFF, MIN_BUFF);
+		jPanel.add(wordCloudLabel);
+		
+		blackListLabel.setPreferredSize(new Dimension(LABELWI,FIELD_HIGH));
+		blackListLabel.setSize(new Dimension(LABELWI,FIELD_HIGH));
+		blackListLabel.setLocation(MIN_BUFF, MIN_BUFF + FIELD_HIGH);		
+		jPanel.add(blackListLabel);
 		
 		jFrame.pack();
 		jFrame.setLocationRelativeTo(null);
@@ -76,11 +102,9 @@ public class UserUI
 		    public void actionPerformed(ActionEvent event) {
 
 				String messsage = "The project was created for the GMIT Advanced OO module for John Healy."
-		    			+ "\nThis project was programmed by Andrew Sweeney - G00237144.";
+		    			+ "\nThis project was programmed by Andrew Sweeney.";
 				
-				String title = "About Word Cloud";
-				
-				new UserUIDialog(title,messsage,UserUIMessageType.PLAIN);
+				new UserUIDialog("About - G00237144",messsage);
 		    }
 		});
 		
@@ -93,22 +117,18 @@ public class UserUI
 	}
 	
 	public void OkButton()
-	{
-		System.out.println("Submitted file/url location");
-		
+	{		
 		Worker worker = new Worker();
 		worker.doWork(getTextFieldBlackListFile(),getTextFieldFile());
 	}	
 	
 	private String getTextFieldFile()
 	{
-		System.out.println(textfieldFileUrl.getText());
-		return textfieldFileUrl.getText();
+		return txt_wordCloudFileUrl.getText();
 	}
 	
 	private String getTextFieldBlackListFile()
 	{
-		System.out.println(textfieldBlackListFile.getText());
-		return textfieldBlackListFile.getText();
+		return txt_blackListFileUrl.getText();
 	}
 }

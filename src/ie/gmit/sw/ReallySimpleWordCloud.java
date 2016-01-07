@@ -6,7 +6,9 @@ import javax.imageio.*;
 import java.io.*;
 
 public class ReallySimpleWordCloud 
-{
+{	
+	/*
+}
 	public static void main(String args[]) throws Exception
 	{
 		Font font = new Font(Font.SANS_SERIF, Font.BOLD, 62);
@@ -28,4 +30,5 @@ public class ReallySimpleWordCloud
 		
 		ImageIO.write(image, "png", new File("image.png"));
 	}
+	*/
 }

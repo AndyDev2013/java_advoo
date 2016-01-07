@@ -13,8 +13,6 @@ public class Worker
 		importer = new Importer();
 		
 		importer.ImportBlackList(fileToBlackList);
-		importer.ImportWords(fileOrUrl);
-		
-	}
-	
+		importer.ImportWords(fileOrUrl);		
+	}	
 }
