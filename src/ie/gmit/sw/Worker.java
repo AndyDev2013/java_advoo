@@ -1,12 +1,13 @@
 package ie.gmit.sw;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Worker 
 {	
 	private HashMap<String,Integer> map;
-	private List<String> orderedWordList;
+	private ArrayList<String> orderedWordList;
 	private Importer importer;
 	private WordValueMap worldvaluemap;
 
@@ -20,6 +21,15 @@ public class Worker
 		orderedWordList = worldvaluemap.getOrderedList();
 		map = worldvaluemap.getStrValMap();
 				
+		try 
+		{
+			ReallySimpleWordCloud rswc = new ReallySimpleWordCloud(orderedWordList);
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 		System.out.println();
 		
 		for(String s : orderedWordList)

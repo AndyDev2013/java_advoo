@@ -31,14 +31,14 @@ public class WordValueMap
 		return wordValueMap.size();
 	}
 	
-	public List<String> getOrderedList()
+	public ArrayList<String> getOrderedList()
 	{
 		return this.getOrderedKeys(wordValueMap);
 	}
 	
-	public List<String> getOrderedKeys(HashMap<String,Integer> map)
+	public ArrayList<String> getOrderedKeys(HashMap<String,Integer> map)
 	{
-		List<String> arrList = new ArrayList<String>();
+		ArrayList<String> arrList = new ArrayList<String>();
 	
 		HashMap<String,Integer> temp = new HashMap<String,Integer>(map);
 						
