@@ -30,11 +30,14 @@ public class Worker
 			e.printStackTrace();
 		}
 		
+		/*
 		System.out.println();
 		
 		for(String s : orderedWordList)
 		{
 			System.out.println(s + " " + map.get(s));
 		}
+		*/
+		
 	}	
 }

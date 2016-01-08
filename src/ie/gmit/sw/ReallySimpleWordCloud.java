@@ -3,7 +3,8 @@ package ie.gmit.sw;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.List;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,101 +13,97 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-class Bounds
-{
-	private int x,y;
-	
-	public Bounds(Bounds bounds)
-	{
-		this.x = bounds.x;
-		this.y = bounds.y;
-	}
-	
-	public Bounds(int l,int w)
-	{
-		this.x = l;
-		this.y = w;
-	}
-	
-	public int getX()
-	{
-		return x;
-	}
-	
-	public int getY()
-	{
-		return y;
-	}	
-}
-
 public class ReallySimpleWordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
 	private int ImageDimension = 1000;
-	private int fontSize = 60;
+	private int fontSize = 100;
 	
 	public ReallySimpleWordCloud(ArrayList words) throws IOException
 	{
 		BufferedImage image = new BufferedImage(ImageDimension, ImageDimension, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics graphics = image.getGraphics();
 		
+		AffineTransform affinetransform = new AffineTransform();     
+		FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 
+				
 		boundsList = new ArrayList<Bounds>();
+		
+		//graphics.setColor(Color.black);
+		//graphics.fillRect(0, 0, ImageDimension, ImageDimension);
 		
 		///////////////////////////////////////////////////////////////
 		
 		int wordCount = 0;
 		
-		while(wordCount < 10)
+		System.out.println("\nGot here");
+		
+		while(wordCount < 20)
 		{
 			String currWord = (String) words.get(wordCount);
-			boolean outOfBounds = false;
 			Bounds currBounds = null;
-			
-			//while(!outOfBounds)
-			{
-				currBounds = new Bounds(getRandomPosition(ImageDimension,ImageDimension));
-				
-				//outOfBounds = CheckBounds(currBounds);
-			}
-			
-			System.out.println(currWord);			
-
+						
 			Font font = new Font(Font.SANS_SERIF, Font.BOLD, fontSize);
 			graphics.setColor(randomColor());
 			graphics.setFont(font);
-			graphics.drawString(currWord, currBounds.getX(), currBounds.getY());
-						
-			fontSize -= 5;
 			
+			int strWidth = (int)(font.getStringBounds(currWord, frc).getWidth());
+			int strHeight = (int)(font.getStringBounds(currWord, frc).getHeight());
+			
+			//System.out.println(strWidth + " : " + strHeight);
+			
+			currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
+			
+			while(!CheckBounds(currBounds))
+			{
+				currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
+			}
+			
+			//System.out.println(currBounds.getX() + " " + currBounds.getY() + " " + currBounds.getWidth() + " " + currBounds.getHeight());
+			
+			boundsList.add(currBounds);
+			
+			graphics.drawString(currWord, currBounds.getX(), currBounds.getY());				
+	
+			fontSize -= 3;
 			++wordCount;
 		}		
 		
 		graphics.dispose();
 		
 		ImageIO.write(image, "png", new File("image.png"));
+		
+		System.out.println("\nFinished");
 	}
 	
 	private boolean CheckBounds(Bounds checkMe)
-	{
-		boolean flag = false;
-		
+	{		
 		for(Bounds bound : boundsList)
-		{
-			
-						
+		{	
+			if(checkMe.getX() < bound.getX() + bound.getWidth() && checkMe.getX() + checkMe.getWidth() > bound.getX() && checkMe.getY() < bound.getY() + bound.getHeight() && checkMe.getHeight() + checkMe.getY() > bound.getY())
+			{
+				//System.out.println("Collision");
+				
+				return false; //collision
+			}			
 		}
 		
-		return flag;
+		return true;
 	}
 	
-	private Bounds getRandomPosition(int pagewidth,int pageheight)
+	private Bounds getRandomPosition(int wid,int hi,int pagewidth,int pageheight)
 	{
 		Random random = new Random();
 		
-		int randomWi = random.nextInt(pagewidth);
-		int randomHi = random.nextInt(pageheight);
+		int x = random.nextInt(pagewidth - wid);
+		int y = random.nextInt(pageheight);
+		
+		if(y < hi)
+		{
+			y += hi;
+		}
 						
-		return new Bounds(randomWi,randomHi);		
+		return new Bounds(wid,hi,x,y);		
 	}
 	
 	private Color randomColor()
