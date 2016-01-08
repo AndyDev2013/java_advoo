@@ -13,17 +13,20 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public class ReallySimpleWordCloud 
+import ie.gmit.sw.words.Bounds;
+import ie.gmit.sw.words.SingleWordFactory;
+import ie.gmit.sw.words.Wordable;
+
+public class WordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
 	private int ImageDimension = 3000;
 	private int fontSize = 120;
 	
-	public ReallySimpleWordCloud(ArrayList words) throws IOException
+	public WordCloud(ArrayList words) throws IOException
 	{
 		BufferedImage image = new BufferedImage(ImageDimension, ImageDimension, BufferedImage.TYPE_4BYTE_ABGR);
-		Graphics graphics = image.getGraphics();
-		
+		Graphics graphics = image.getGraphics();		
 		AffineTransform affinetransform = new AffineTransform();     
 		FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 
 				
@@ -36,14 +39,12 @@ public class ReallySimpleWordCloud
 		
 		int wordCount = 0;
 				
-		while(wordCount < 100)
+		while(wordCount < Globals.getInstance().getWordLimit())
 		{
 			String currWord = (String) words.get(wordCount);
 			Bounds currBounds = null;
 						
 			Font font = new Font(Font.SANS_SERIF, Font.BOLD, fontSize);
-			graphics.setColor(randomColor());
-			graphics.setFont(font);
 			
 			int strWidth = (int)(font.getStringBounds(currWord, frc).getWidth());
 			int strHeight = (int)(font.getStringBounds(currWord, frc).getHeight());
@@ -55,11 +56,16 @@ public class ReallySimpleWordCloud
 				currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
 			}
 			
-			//System.out.println(currBounds.getX() + " " + currBounds.getY() + " " + currBounds.getWidth() + " " + currBounds.getHeight());
+			boundsList.add(currBounds);				
 			
-			boundsList.add(currBounds);
+			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, fontSize);
 			
-			graphics.drawString(currWord, currBounds.getX(), currBounds.getY());				
+			//System.out.println(word.getColor());
+	
+			graphics.setFont(word.getFont());
+			graphics.setColor(word.getColor());	
+			
+			graphics.drawString(word.getText(), word.getBounds().getX(), word.getBounds().getY());			
 	
 			if(wordCount % 15 == 0)			
 				fontSize -= 2;
@@ -71,11 +77,7 @@ public class ReallySimpleWordCloud
 			
 			++wordCount;
 		}		
-		
-		System.out.println(wordCount + " : " + fontSize);
-		
-		graphics.dispose();
-		
+				
 		ImageIO.write(image, "png", new File("image.png"));
 		
 		System.out.println("\nFinished");
@@ -109,16 +111,5 @@ public class ReallySimpleWordCloud
 		}
 						
 		return new Bounds(wid,hi,x,y);		
-	}
-	
-	private Color randomColor()
-	{
-		Random random = new Random();
-		
-		int R = random.nextInt(256);
-		int G = random.nextInt(256);
-		int B= random.nextInt(256);
-		
-		return new Color(R, G, B);
 	}
 }

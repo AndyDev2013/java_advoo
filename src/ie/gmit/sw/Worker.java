@@ -25,7 +25,7 @@ public class Worker
 		
 		try 
 		{
-			ReallySimpleWordCloud rswc = new ReallySimpleWordCloud(orderedWordList);
+			WordCloud rswc = new WordCloud(orderedWordList);
 		} 
 		catch (IOException e)
 		{

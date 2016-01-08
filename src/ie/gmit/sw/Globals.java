@@ -11,6 +11,8 @@ public class Globals
    private String backUpStopwords = "txt/stopwords.txt";
    private String backUpWordCloud = "txt/warandpeace.txt";
    
+   private int WordLimit = 100;
+   
    public static Globals getInstance()
    {
       if(instance == null) 
@@ -33,21 +35,26 @@ public class Globals
    
    public boolean getIsDebug()
    {
-	   return DEBUG;
+	   return this.DEBUG;
    }
    
    public boolean getIsGui()
    {
-	   return GUI;
+	   return this.GUI;
+   }
+   
+   public int getWordLimit()
+   {
+	   return this.WordLimit;
    }
    
    public String getBackupStopwords()
    {
-	   return backUpStopwords;
+	   return this.backUpStopwords;
    }
    
    public String getBackupWordCloud()
    {
-	   return backUpWordCloud;
+	   return this.backUpWordCloud;
    }
 }

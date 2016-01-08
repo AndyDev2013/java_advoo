@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.ui;
 
 import java.awt.Dimension;
 import java.awt.Label;
@@ -12,6 +12,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import ie.gmit.sw.Worker;
 
 public class UserUI 
 {

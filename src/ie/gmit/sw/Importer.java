@@ -14,6 +14,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import ie.gmit.sw.ui.UserUIDialog;
+import ie.gmit.sw.ui.UserUIMessageType;
+
 public class Importer implements Parsable
 {
 	private WordValueMap wordValueMap;

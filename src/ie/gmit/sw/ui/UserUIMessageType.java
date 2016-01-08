@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.ui;
 
 public enum UserUIMessageType 
 {
