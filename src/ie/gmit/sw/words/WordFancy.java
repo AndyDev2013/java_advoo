@@ -10,14 +10,24 @@ public class WordFancy implements Wordable
 	private Font font;
 	private String text;
 	private int size;
-	
-	public WordFancy(Bounds bounds,String text,int size)
+	private WordType wt;
+
+	public WordFancy(Bounds bounds,String text,int size,WordType wt)
 	{
 		this.bounds = bounds;
 		this.text = text;
 		this.size = size;
-		this.color = Color.blue;
+		this.color = Color.black;
 		this.font = new Font(Font.SANS_SERIF, Font.BOLD, getSize());
+		this.wt = wt;
+	}
+	
+	public WordType getWt() {
+		return this.wt;
+	}
+
+	public void setWt(WordType wt) {
+		this.wt = wt;
 	}
 	
 	public Bounds getBounds() {

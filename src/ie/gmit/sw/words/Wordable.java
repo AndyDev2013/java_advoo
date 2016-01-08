@@ -14,5 +14,7 @@ public interface Wordable
 	public String getText();
 	public void setSize(int size);
 	public int getSize();
-	public void setText(String text);
+	public void setText(String text);	
+	public WordType getWt();
+	public void setWt(WordType wt);
 }

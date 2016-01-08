@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import ie.gmit.sw.words.Bounds;
 import ie.gmit.sw.words.SingleWordFactory;
+import ie.gmit.sw.words.WordType;
 import ie.gmit.sw.words.Wordable;
 
 public class WordCloud 
@@ -22,6 +24,7 @@ public class WordCloud
 	private ArrayList<Bounds> boundsList;
 	private int ImageDimension = 3000;
 	private int fontSize = 120;
+	private Color currentColor;
 	
 	public WordCloud(ArrayList words) throws IOException
 	{
@@ -60,10 +63,9 @@ public class WordCloud
 			
 			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, fontSize);
 			
-			//System.out.println(word.getColor());
-	
+			graphics.setColor(word.getColor());
+			
 			graphics.setFont(word.getFont());
-			graphics.setColor(word.getColor());	
 			
 			graphics.drawString(word.getText(), word.getBounds().getX(), word.getBounds().getY());			
 	
@@ -77,10 +79,12 @@ public class WordCloud
 			
 			++wordCount;
 		}		
-				
+	
+		graphics.dispose();
+		
 		ImageIO.write(image, "png", new File("image.png"));
 		
-		System.out.println("\nFinished");
+		System.out.println("\nFinished: " + wordCount);
 	}
 	
 	private boolean CheckBounds(Bounds checkMe)
@@ -111,5 +115,38 @@ public class WordCloud
 		}
 						
 		return new Bounds(wid,hi,x,y);		
+	}
+
+	private Color RandomColor() 
+	{		
+		Random random = new Random();
+		Color []color = {
+				Color.RED,
+				Color.BLUE,
+				Color.GREEN,
+				Color.CYAN,
+				Color.PINK,
+				Color.ORANGE
+	        };
+				
+		int pos = random.nextInt(color.length);
+			
+		Color selected = color[pos];
+		
+		System.out.println("Here: " + selected + " " + pos);
+		
+		return Color.ORANGE;
+	}
+	
+	private Color randomColor()
+	{
+		Random random = new Random();
+		
+		int R = random.nextInt(256);
+		int G = random.nextInt(256);
+		int B= random.nextInt(256);
+		int A=  256;
+		
+		return new Color(R, G, B);
 	}
 }

@@ -20,15 +20,15 @@ public class SingleWordFactory
     public Wordable CreateWord(Bounds bounds,String text,int size)
     {
     	WordType wt = WordType.getRandomWordType();
-    	
+    	    	
     	++count;
    
     	if (wt == WordType.BASIC)
-    	  return new WordBasic(bounds, text,size);
+    	  return new WordBasic(bounds, text,size,WordType.BASIC);
 	    else if (wt == WordType.FANCY)
-	      return new WordFancy(bounds, text,size);
+	      return new WordFancy(bounds, text,size,WordType.FANCY);
 	    else if (wt == WordType.FUNNY)
-	      return new WordFunny(bounds, text,size);
+	      return new WordFunny(bounds, text,size,WordType.FUNNY);
     	 
     	return null;    	
     }

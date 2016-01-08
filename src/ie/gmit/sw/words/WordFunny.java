@@ -11,13 +11,15 @@ public class WordFunny implements Wordable
 	private Font font;
 	private String text;
 	private int size;
-
-	public WordFunny(Bounds bounds,String text,int size)
+	private WordType wt;
+	
+	public WordFunny(Bounds bounds,String text,int size,WordType wt)
 	{
 		this.bounds = bounds;
 		this.text = text;
-		this.color = RandomColor();
+		this.color = Color.black;
 		this.font = new Font(Font.SANS_SERIF, Font.BOLD, getSize());
+		this.wt = wt;
 	}
 	
 	public Bounds getBounds() {
@@ -28,23 +30,24 @@ public class WordFunny implements Wordable
 		this.bounds = bounds;
 	}
 
-	public Color getColor() 
-	{
-		return this.color;		
+	public WordType getWt() {
+		return wt;
 	}
 
-	public Color RandomColor() 
-	{		
+	public void setWt(WordType wt) {
+		this.wt = wt;
+	}
+
+	public Color getColor() 
+	{
 		Random random = new Random();
-		Color color;	
-				
-		int red = random.nextInt(256);
-		int green = random.nextInt(256);
-		int blue = random.nextInt(256);
 		
-		color = new Color(red,green,blue);
-			
-		return color;
+		int R = random.nextInt(256);
+		int G = random.nextInt(256);
+		int B= random.nextInt(256);
+		int A=  256;
+		
+		return new Color(R, G, B);
 	}
 
 	public void setColor(Color color) {

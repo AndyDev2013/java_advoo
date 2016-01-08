@@ -11,7 +11,7 @@ public class Globals
    private String backUpStopwords = "txt/stopwords.txt";
    private String backUpWordCloud = "txt/warandpeace.txt";
    
-   private int WordLimit = 100;
+   private int WordLimit = 20;
    
    public static Globals getInstance()
    {
