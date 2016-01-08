@@ -11,6 +11,7 @@ public enum WordType
 
 	public static WordType getRandomWordType() 
 	{
-		  return vals[random.nextInt(vals.length)];
+		return vals[0];
+		  //return vals[random.nextInt(vals.length)];
 	}
 }

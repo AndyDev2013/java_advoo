@@ -22,21 +22,22 @@ import ie.gmit.sw.words.Wordable;
 public class WordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
-	private int ImageDimension = 3000;
-	private int fontSize = 120;
+	private int ImageDimension = 2000;
+	private int fontSize = 250;
 	private Color currentColor;
 	
 	public WordCloud(ArrayList words) throws IOException
 	{
 		BufferedImage image = new BufferedImage(ImageDimension, ImageDimension, BufferedImage.TYPE_4BYTE_ABGR);
-		Graphics graphics = image.getGraphics();		
+		Graphics plaingraphics = image.getGraphics();	
 		AffineTransform affinetransform = new AffineTransform();     
-		FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 
+		FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 		
+		Font font = new Font(Font.SANS_SERIF, Font.BOLD, fontSize);
 				
 		boundsList = new ArrayList<Bounds>();
 		
-		graphics.setColor(new Color(238,238,238));
-		graphics.fillRect(0, 0, ImageDimension, ImageDimension);
+		plaingraphics.setColor(new Color(238,238,238));
+		plaingraphics.fillRect(0, 0, ImageDimension, ImageDimension);
 		
 		///////////////////////////////////////////////////////////////
 		
@@ -46,8 +47,6 @@ public class WordCloud
 		{
 			String currWord = (String) words.get(wordCount);
 			Bounds currBounds = null;
-						
-			Font font = new Font(Font.SANS_SERIF, Font.BOLD, fontSize);
 			
 			int strWidth = (int)(font.getStringBounds(currWord, frc).getWidth());
 			int strHeight = (int)(font.getStringBounds(currWord, frc).getHeight());
@@ -61,26 +60,26 @@ public class WordCloud
 			
 			boundsList.add(currBounds);				
 			
-			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, fontSize);
+			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, fontSize);	
 			
-			graphics.setColor(word.getColor());
+			plaingraphics.setFont(word.getFont());
 			
-			graphics.setFont(word.getFont());
+			plaingraphics.setColor(randomColor());
 			
-			graphics.drawString(word.getText(), word.getBounds().getX(), word.getBounds().getY());			
+			plaingraphics.drawString(word.getText(), word.getBounds().getX(), word.getBounds().getY());	
 	
-			if(wordCount % 15 == 0)			
-				fontSize -= 2;
+			if(wordCount < 3)			
+				fontSize -= 40;
 			else
-				fontSize -= 1;
+				fontSize -= 2;			
+						
+			//System.out.println(word.getText() +  " : " + wordCount + " " + fontSize);
 			
-			if(fontSize < 0)
-				System.out.println("Font: " + wordCount);
-			
+			font = word.getFont();
 			++wordCount;
 		}		
 	
-		graphics.dispose();
+		plaingraphics.dispose();
 		
 		ImageIO.write(image, "png", new File("image.png"));
 		
@@ -88,7 +87,7 @@ public class WordCloud
 	}
 	
 	private boolean CheckBounds(Bounds checkMe)
-	{		
+	{			
 		for(Bounds bound : boundsList)
 		{	
 			if(checkMe.getX() < bound.getX() + bound.getWidth() && checkMe.getX() + checkMe.getWidth() > bound.getX() && checkMe.getY() < bound.getY() + bound.getHeight() && checkMe.getHeight() + checkMe.getY() > bound.getY())
@@ -97,7 +96,7 @@ public class WordCloud
 				
 				return false; //collision
 			}			
-		}
+		}	
 		
 		return true;
 	}
@@ -131,11 +130,7 @@ public class WordCloud
 				
 		int pos = random.nextInt(color.length);
 			
-		Color selected = color[pos];
-		
-		System.out.println("Here: " + selected + " " + pos);
-		
-		return Color.ORANGE;
+		return color[pos];
 	}
 	
 	private Color randomColor()

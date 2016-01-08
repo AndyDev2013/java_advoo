@@ -40,14 +40,7 @@ public class WordFunny implements Wordable
 
 	public Color getColor() 
 	{
-		Random random = new Random();
-		
-		int R = random.nextInt(256);
-		int G = random.nextInt(256);
-		int B= random.nextInt(256);
-		int A=  256;
-		
-		return new Color(R, G, B);
+		return this.color;
 	}
 
 	public void setColor(Color color) {

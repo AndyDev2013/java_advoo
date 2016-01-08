@@ -163,7 +163,7 @@ public class Importer implements Parsable
 			
 			//System.out.println(doc.title());
 			
-			Elements divs = doc.select("p, h1, h2, h3, h4, h5, h6, span, a, li, title");
+			Elements divs = doc.select("p, h1, h2, h3, h4, h5, h6, span, a, li, title, div");
 						
 			for (Element div : divs) 
 			{
