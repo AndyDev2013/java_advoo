@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 public class ReallySimpleWordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
-	private int ImageDimension = 1000;
-	private int fontSize = 100;
+	private int ImageDimension = 3000;
+	private int fontSize = 120;
 	
 	public ReallySimpleWordCloud(ArrayList words) throws IOException
 	{
@@ -29,16 +29,14 @@ public class ReallySimpleWordCloud
 				
 		boundsList = new ArrayList<Bounds>();
 		
-		//graphics.setColor(Color.black);
-		//graphics.fillRect(0, 0, ImageDimension, ImageDimension);
+		graphics.setColor(new Color(238,238,238));
+		graphics.fillRect(0, 0, ImageDimension, ImageDimension);
 		
 		///////////////////////////////////////////////////////////////
 		
 		int wordCount = 0;
-		
-		System.out.println("\nGot here");
-		
-		while(wordCount < 20)
+				
+		while(wordCount < 100)
 		{
 			String currWord = (String) words.get(wordCount);
 			Bounds currBounds = null;
@@ -49,8 +47,6 @@ public class ReallySimpleWordCloud
 			
 			int strWidth = (int)(font.getStringBounds(currWord, frc).getWidth());
 			int strHeight = (int)(font.getStringBounds(currWord, frc).getHeight());
-			
-			//System.out.println(strWidth + " : " + strHeight);
 			
 			currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
 			
@@ -65,9 +61,18 @@ public class ReallySimpleWordCloud
 			
 			graphics.drawString(currWord, currBounds.getX(), currBounds.getY());				
 	
-			fontSize -= 3;
+			if(wordCount % 15 == 0)			
+				fontSize -= 2;
+			else
+				fontSize -= 1;
+			
+			if(fontSize < 0)
+				System.out.println("Font: " + wordCount);
+			
 			++wordCount;
 		}		
+		
+		System.out.println(wordCount + " : " + fontSize);
 		
 		graphics.dispose();
 		

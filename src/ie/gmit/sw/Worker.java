@@ -20,7 +20,9 @@ public class Worker
 		worldvaluemap = importer.getWordValueMap();
 		orderedWordList = worldvaluemap.getOrderedList();
 		map = worldvaluemap.getStrValMap();
-				
+			
+		System.out.println("List size: " + orderedWordList.size());
+		
 		try 
 		{
 			ReallySimpleWordCloud rswc = new ReallySimpleWordCloud(orderedWordList);

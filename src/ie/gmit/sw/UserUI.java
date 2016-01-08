@@ -76,7 +76,7 @@ public class UserUI
 		txt_blackListFileUrl.setLocation(MIN_BUFF + LABELWI, MIN_BUFF + FIELD_HIGH);
 		jPanel.add(txt_blackListFileUrl);
 		
-		txt_wordCloudFileUrl = new TextField("http://www.breakingnews.ie/");
+		txt_wordCloudFileUrl = new TextField("http://www.independent.ie/");
 		txt_wordCloudFileUrl.setPreferredSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
 		txt_wordCloudFileUrl.setSize(new Dimension(WI - (MIN_BUFF * BORDER) - LABELWI,FIELD_HIGH));
 		txt_wordCloudFileUrl.setLocation(MIN_BUFF + LABELWI, MIN_BUFF);
