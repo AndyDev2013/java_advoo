@@ -41,11 +41,16 @@ public class WordValueMap
 		ArrayList<String> arrList = new ArrayList<String>();
 	
 		HashMap<String,Integer> temp = new HashMap<String,Integer>(map);
-						
-		for(Entry<String, Integer> entry : map.entrySet()) 
+					
+		int max = map.size();
+		int count = 0;
+		
+		while(count < max) 
 		{			
 			arrList.add(highestKey(temp));			
 			temp.remove(highestKey(temp));
+			
+			count++;
 		}
 		
 		return arrList;
@@ -112,5 +117,15 @@ public class WordValueMap
 	public HashMap<String, Integer> getStrValMap()
 	{
 		return this.wordValueMap;
+	}
+	
+	public int getValueForKey(String key)
+	{
+		if(wordValueMap.containsKey(key))
+		{
+			return wordValueMap.get(key);			
+		}
+		
+		return 0; 
 	}
 }

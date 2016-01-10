@@ -26,6 +26,18 @@ public class Bounds
 		this.y = y;
 	}
 	
+	public boolean doIAvoidCollision(Bounds checkMe,int bufferSpace)
+	{
+		if(checkMe.getX() < this.getX() + this.getWidth() + bufferSpace && checkMe.getX() + checkMe.getWidth() + bufferSpace > this.getX() && checkMe.getY() < this.getY() + this.getHeight() + bufferSpace && checkMe.getHeight() + checkMe.getY() + bufferSpace > this.getY())
+		{
+			return false;
+		}	
+		else
+		{
+			return true;
+		}
+	}
+	
 	public int getX()
 	{
 		return this.x;

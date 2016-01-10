@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.jsoup.Jsoup;
@@ -21,6 +20,7 @@ public class Importer implements Parsable
 {
 	private WordValueMap wordValueMap;
 	private HashSet<String> blacklist;
+	private int minWordLen = 3;
 	
 	public List<String> ImportWords(String fileOrUrl)
 	{
@@ -120,7 +120,7 @@ public class Importer implements Parsable
 				 {
 					 if(blacklist != null)
 					 {
-						 if(!(blacklist.contains(word)))					 
+						 if(!(blacklist.contains(word)) && word.length() > minWordLen)					 
 							 wordValueMap.add(word);
 					 }
 					 else
