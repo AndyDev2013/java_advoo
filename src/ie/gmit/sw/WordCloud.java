@@ -12,37 +12,36 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.synth.SynthSeparatorUI;
+
+import org.omg.CosNaming.IstringHelper;
 
 import ie.gmit.sw.words.Bounds;
 import ie.gmit.sw.words.SingleWordFactory;
-import ie.gmit.sw.words.WordType;
 import ie.gmit.sw.words.Wordable;
 
 public class WordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
 	private int ImageDimension = 2000;
-	private int fontSize = 250;
-	private Color currentColor;
+	private int bufferSpace = 10;
 	
-	public WordCloud(ArrayList words) throws IOException
+	public WordCloud(ArrayList<String> words) throws IOException
 	{
 		BufferedImage image = new BufferedImage(ImageDimension, ImageDimension, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics plaingraphics = image.getGraphics();	
 		AffineTransform affinetransform = new AffineTransform();     
 		FontRenderContext frc = new FontRenderContext(affinetransform,true,true); 		
-		Font font = new Font(Font.SANS_SERIF, Font.BOLD, fontSize);
+		Font font = new Font(Font.SANS_SERIF, Font.BOLD, Globals.getInstance().getFontSize());
 				
 		boundsList = new ArrayList<Bounds>();
 		
-		plaingraphics.setColor(new Color(238,238,238));
+		plaingraphics.setColor(new Color(236,236,236));
 		plaingraphics.fillRect(0, 0, ImageDimension, ImageDimension);
 		
-		///////////////////////////////////////////////////////////////
-		
 		int wordCount = 0;
-				
+		int radius = 0;
+		float increment = 0;
+		
 		while(wordCount < Globals.getInstance().getWordLimit())
 		{
 			String currWord = (String) words.get(wordCount);
@@ -50,32 +49,43 @@ public class WordCloud
 			
 			int strWidth = (int)(font.getStringBounds(currWord, frc).getWidth());
 			int strHeight = (int)(font.getStringBounds(currWord, frc).getHeight());
-			
-			currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
+						
+			currBounds = new Bounds(strWidth,strHeight,getRandomPositionCircle(radius,increment,strWidth,strHeight,ImageDimension,ImageDimension));
 			
 			while(!CheckBounds(currBounds))
 			{
-				currBounds = new Bounds(strWidth,strHeight,getRandomPosition(strWidth,strHeight,ImageDimension,ImageDimension));
-			}
+				if(increment > 360)
+				{
+					increment = 0;		
+					radius++;
+				}
+				
+				increment += 0.01;
+				
+				currBounds = new Bounds(strWidth,strHeight,getRandomPositionCircle(radius,increment,strWidth,strHeight,ImageDimension,ImageDimension));				
+			}	
 			
 			boundsList.add(currBounds);				
 			
-			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, fontSize);	
+			Wordable word = SingleWordFactory.getInstance().CreateWord(currBounds, currWord, Globals.getInstance().getFontSize());	
 			
 			plaingraphics.setFont(word.getFont());
 			
-			plaingraphics.setColor(randomColor());
+			plaingraphics.setColor(RandomColor());
 			
 			plaingraphics.drawString(word.getText(), word.getBounds().getX(), word.getBounds().getY());	
-	
-			if(wordCount < 3)			
-				fontSize -= 40;
-			else
-				fontSize -= 2;			
-						
-			//System.out.println(word.getText() +  " : " + wordCount + " " + fontSize);
 			
+			int fSize = Globals.getInstance().getFontSize();
+			
+			if(wordCount < 10)
+				fSize -= 5;
+			else
+				fSize -= 0.2;			
+									
 			font = word.getFont();
+			
+			Globals.getInstance().setFontSize(fSize);
+			
 			++wordCount;
 		}		
 	
@@ -87,36 +97,33 @@ public class WordCloud
 	}
 	
 	private boolean CheckBounds(Bounds checkMe)
-	{			
+	{					
 		for(Bounds bound : boundsList)
 		{	
-			if(checkMe.getX() < bound.getX() + bound.getWidth() && checkMe.getX() + checkMe.getWidth() > bound.getX() && checkMe.getY() < bound.getY() + bound.getHeight() && checkMe.getHeight() + checkMe.getY() > bound.getY())
+			if(checkMe.getX() < bound.getX() + bound.getWidth() + bufferSpace && checkMe.getX() + checkMe.getWidth() + bufferSpace > bound.getX() && checkMe.getY() < bound.getY() + bound.getHeight() + bufferSpace && checkMe.getHeight() + checkMe.getY() + bufferSpace > bound.getY())
 			{
-				//System.out.println("Collision");
-				
-				return false; //collision
+				return false;
 			}			
 		}	
 		
-		return true;
+		if(checkMe.getX() + checkMe.getWidth() < ImageDimension - bufferSpace || checkMe.getY() + checkMe.getHeight() < ImageDimension - bufferSpace)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 	
-	private Bounds getRandomPosition(int wid,int hi,int pagewidth,int pageheight)
-	{
-		Random random = new Random();
+	private Bounds getRandomPositionCircle(int radius,float increment, int wid,int hi,int pagewidth,int pageheight)
+	{			
+		double angle = increment * Math.PI / 180;
+		int x = (int)((ImageDimension / 2) + radius * Math.cos(angle));
+		int y = (int)((ImageDimension / 2) + radius * Math.sin(angle));
 		
-		int x = random.nextInt(pagewidth - wid);
-		int y = random.nextInt(pageheight);
-		
-		if(y < hi)
-		{
-			y += hi;
-		}
-						
 		return new Bounds(wid,hi,x,y);		
 	}
 
-	private Color RandomColor() 
+	private Color RandomColorPreset() 
 	{		
 		Random random = new Random();
 		Color []color = {
@@ -133,14 +140,13 @@ public class WordCloud
 		return color[pos];
 	}
 	
-	private Color randomColor()
+	private Color RandomColor()
 	{
 		Random random = new Random();
 		
 		int R = random.nextInt(256);
 		int G = random.nextInt(256);
-		int B= random.nextInt(256);
-		int A=  256;
+		int B = random.nextInt(256);
 		
 		return new Color(R, G, B);
 	}

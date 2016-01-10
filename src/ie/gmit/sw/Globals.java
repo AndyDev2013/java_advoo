@@ -11,7 +11,8 @@ public class Globals
    private String backUpStopwords = "txt/stopwords.txt";
    private String backUpWordCloud = "txt/warandpeace.txt";
    
-   private int WordLimit = 30;
+   private int WordLimit = 70;
+   private int fontSize = 120;
    
    public static Globals getInstance()
    {
@@ -22,6 +23,16 @@ public class Globals
       
       return instance;
    }
+   
+   public int getFontSize() 
+   {
+	   return fontSize;
+   }
+
+	public void setFontSize(int fontSize) 
+	{
+		this.fontSize = fontSize;
+	} 
    
    public void setIsDebug(boolean debug)
    {
