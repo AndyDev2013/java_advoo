@@ -1,7 +1,7 @@
 # Wordcloud usin JSoup, Java and OOP
 Advanced OO project assignment for college.
 
-![TitleImage](http://puu.sh/mpRnS/d86bbabc1f.png =350x350)
+![TitleImage](http://puu.sh/mqW5Q/fca844b844.png)
 
 # How to run
 
