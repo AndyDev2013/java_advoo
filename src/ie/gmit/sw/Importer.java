@@ -2,8 +2,11 @@ package ie.gmit.sw;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashSet;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import ie.gmit.sw.ui.UserUIDialog;
 import ie.gmit.sw.ui.UserUIMessageType;
+import jdk.nashorn.internal.objects.Global;
 
 /**
  * This class is manages the creation of a list of ordered words.
@@ -80,16 +84,39 @@ public class Importer implements Parserable
 		System.out.println("--- Blacklist File ---");
 		System.out.println("\nTrying to import blacklist file: " + "\"" + fileUrl + "\"");
 		
-		blacklist = new HashSet<String>();		
+		Reader currentReader = null;
+		blacklist = new HashSet<String>();	
 		
-		if(!(isFile(fileUrl)))
-		{
-			fileUrl = Globals.getInstance().getBackupStopwords();
-			
-			System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
-		}
+    	if(!(Globals.getInstance().getIsDebug()))
+    	{
+    		ClassLoader classLoader = getClass().getClassLoader();
+    		
+        	if(classLoader.getResourceAsStream(fileUrl) != null) 		
+    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileUrl)); 
+    		else
+    		{
+    			System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
+    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
+    		}
+    	}
+    	else
+    	{
+    		try 
+    		{    			
+				currentReader = new FileReader(fileUrl);
+			}
+    		catch (FileNotFoundException e)
+    		{
+    			if(!(isFile(fileUrl)))
+    			{
+    				fileUrl = Globals.getInstance().getBackupStopwords();
+    				
+    				System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
+    			}
+			}
+    	}
 	
-    	try (BufferedReader buffRead = new BufferedReader(new FileReader(fileUrl)))
+    	try (BufferedReader buffRead = new BufferedReader(currentReader))
 		{
     		System.out.println("Read file for blacklist: " + fileUrl);
     		
@@ -130,9 +157,32 @@ public class Importer implements Parserable
 	*/ 	
     private List<String> ReadFile(String fileOrUrl)
     {
-    	System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
+    	Reader currentReader = null;
     	
-    	try (BufferedReader buffRead = new BufferedReader(new FileReader(fileOrUrl)))
+    	if(!(Globals.getInstance().getIsDebug()))
+    	{
+    		ClassLoader classLoader = getClass().getClassLoader();
+    		
+    		if(classLoader.getResourceAsStream(fileOrUrl) != null) 		
+    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileOrUrl)); 
+    		else
+    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
+    	}
+    	else
+    	{
+    		System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
+    		
+    		try
+    		{
+				currentReader = new FileReader(fileOrUrl);
+			}
+    		catch (FileNotFoundException e) 
+    		{
+				e.printStackTrace();
+			}
+    	}
+    	
+    	try (BufferedReader buffRead = new BufferedReader(currentReader))
 		{
     		System.out.println("Read file: " + fileOrUrl);
     		

@@ -64,7 +64,7 @@ public class WordValueMap
 	
 		HashMap<String,Integer> temp = new HashMap<String,Integer>(map);
 					
-		int max = map.size();
+		int max = Globals.getInstance().getWordLimit();
 		int count = 0;
 		
 		while(count < max) 

@@ -24,28 +24,28 @@ public class Runner
 			{			
 				if(args[0].equalsIgnoreCase(("gui")))
 				{		
+					Globals.getInstance().setIsGui(true);
 					UserUI projectUI = new UserUI();
 					projectUI.Init(args[1],args[2]);
 					
-					Globals.getInstance().setIsGui(true);
 				}
 				else if(args[0].equalsIgnoreCase(("cmd")))
 				{
 					commandLineText();
+					Globals.getInstance().setIsGui(false);
 					
 					Worker worker = new Worker();
 					worker.doWork(args[1],args[2]);
 					
-					Globals.getInstance().setIsGui(false);
 				}
 				else
 				{
 					commandLineText();
+					Globals.getInstance().setIsGui(false);
 					
 					Worker worker = new Worker();
 					worker.doWork(args[1],args[2]);
 					
-					Globals.getInstance().setIsGui(false);
 				}
 			}
 			else

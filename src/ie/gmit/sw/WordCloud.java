@@ -3,7 +3,6 @@ package ie.gmit.sw;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -54,6 +53,8 @@ public class WordCloud
 		int radius = 0;
 		int lastFrequency = 0;
 		float increment = 0;
+		
+		System.out.println();
 		
 		while(wordCount < Globals.getInstance().getWordLimit() && Globals.getInstance().getFontSize() > Globals.getInstance().getMinFontSize())
 		{
@@ -108,6 +109,8 @@ public class WordCloud
 			}
 										
 			Globals.getInstance().setFontSize(fSize);
+			
+			System.out.println("Printing word: " + word.getText());
 			
 			++wordCount;
 		}		

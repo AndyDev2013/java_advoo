@@ -11,7 +11,7 @@ public class Globals
    private static Globals instance = null;
    protected Globals() {}
  
-   private boolean DEBUG = true;
+   private boolean DEBUG = false; // Debug mode represents the code being run from eclipse otherwise its run from jar
    private boolean GUI = false;
    
    private String backUpStopwords = "txt/stopwords.txt";
@@ -19,7 +19,7 @@ public class Globals
    
    private int WordLimit = 80;
    private int fontSize = 180;
-   private int ImageDimension = 2500;
+   private int ImageDimension = 2000;
    private int minFontSize = 10;
 
    /**
