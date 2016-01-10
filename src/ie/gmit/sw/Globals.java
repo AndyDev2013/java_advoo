@@ -18,8 +18,8 @@ public class Globals
    private String backUpWordCloud = "txt/warandpeace.txt";
    
    private int WordLimit = 80;
-   private int fontSize = 180;
-   private int ImageDimension = 2000;
+   private int fontSize = 200;
+   private int ImageDimension = 2500;
    private int minFontSize = 10;
 
    /**
