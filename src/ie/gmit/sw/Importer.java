@@ -91,7 +91,6 @@ public class Importer implements Parserable
 		{
 			try
 			{
-				System.out.println("Here");
 				currentReader = new FileReader(fileUrl);
 			} 
 			catch (FileNotFoundException e)
@@ -145,10 +144,17 @@ public class Importer implements Parserable
 
 				 for ( String word : arr) 
 				 {
-					 if(!(blacklist.contains(word)) && !word.equals(""))
-					 {
-						 word = word.toUpperCase();
-						 blacklist.add(word);
+					 word = CleanStr(word);
+					 					 
+					 if(word != null)
+					 {						 
+						 if(!word.equals(""))
+							 word.toUpperCase();
+						 
+						 if(!(blacklist.contains(word)) && !word.equals(""))
+						 {
+							 blacklist.add(word);
+						 }						 
 					 }
 				 }
 			}
@@ -226,13 +232,20 @@ public class Importer implements Parserable
 
 				 for ( String word : arr) 
 				 {
-					 if(blacklist != null)
+					 word = CleanStr(word);
+					 
+					 if(word != null)
 					 {
-						 if(!(blacklist.contains(word)) && word.length() > minWordLen)					 
-							 wordValueMap.add(word);
+						 word = word.toUpperCase();
+						 
+						 if(blacklist != null)
+						 {
+							 if(!(blacklist.contains(word)) && word.length() > minWordLen)					 
+								 wordValueMap.add(word);
+						 }
+						 else
+							 wordValueMap.add(word); 
 					 }
-					 else
-						 wordValueMap.add(word); 
 				 }
 			}
 			
