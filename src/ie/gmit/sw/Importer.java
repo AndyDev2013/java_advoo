@@ -87,34 +87,51 @@ public class Importer implements Parserable
 		Reader currentReader = null;
 		blacklist = new HashSet<String>();	
 		
-    	if(!(Globals.getInstance().getIsDebug()))
-    	{
-    		ClassLoader classLoader = getClass().getClassLoader();
-    		
-        	if(classLoader.getResourceAsStream(fileUrl) != null) 		
-    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileUrl)); 
-    		else
-    		{
-    			System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
-    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
-    		}
-    	}
-    	else
-    	{
-    		try 
-    		{    			
+		if(isFile(fileUrl))
+		{
+			try
+			{
+				System.out.println("Here");
 				currentReader = new FileReader(fileUrl);
+			} 
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
 			}
-    		catch (FileNotFoundException e)
-    		{
-    			if(!(isFile(fileUrl)))
-    			{
-    				fileUrl = Globals.getInstance().getBackupStopwords();
-    				
-    				System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
-    			}
-			}
-    	}
+		}
+		else
+		{
+			if(!(Globals.getInstance().getIsDebug()))
+	    	{
+	    		ClassLoader classLoader = getClass().getClassLoader();
+	    		
+	        	if(classLoader.getResourceAsStream(fileUrl) != null) 		
+	    			currentReader = new InputStreamReader(getClass().getResourceAsStream(fileUrl)); 
+	    		else
+	    		{
+	    			System.out.println("Using the internal backup file : " + "\"" + fileUrl + "\"\n");
+	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
+	    		}
+	    	}
+	    	else
+	    	{
+	    		try 
+	    		{    			
+	    			System.out.println("Regular File Reader");
+					currentReader = new FileReader(fileUrl);
+					
+					if(!(isFile(fileUrl)))
+					{
+						fileUrl = Globals.getInstance().getBackupStopwords();
+						
+						System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
+					}
+				}
+	    		catch (FileNotFoundException e)
+	    		{}   		
+	    	}			
+			
+		}
 	
     	try (BufferedReader buffRead = new BufferedReader(currentReader))
 		{
@@ -159,26 +176,41 @@ public class Importer implements Parserable
     {
     	Reader currentReader = null;
     	
-    	if(!(Globals.getInstance().getIsDebug()))
+    	if(!isFile(fileOrUrl))
     	{
-    		ClassLoader classLoader = getClass().getClassLoader();
-    		
-    		if(classLoader.getResourceAsStream(fileOrUrl) != null) 		
-    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileOrUrl)); 
-    		else
-    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
-    	}
+    	
+	    	if(!(Globals.getInstance().getIsDebug()))
+	    	{
+	    		ClassLoader classLoader = getClass().getClassLoader();
+	    		
+	    		if(classLoader.getResourceAsStream(fileOrUrl) != null) 		
+	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileOrUrl)); 
+	    		else
+	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
+	    	}
+	    	else
+	    	{
+	    		System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
+	    		
+	    		try
+	    		{
+					currentReader = new FileReader(fileOrUrl);
+				}
+	    		catch (FileNotFoundException e) 
+	    		{
+					e.printStackTrace();
+				}
+	    	}
+    	} 
     	else
     	{
-    		System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
-    		
-    		try
+			try
     		{
 				currentReader = new FileReader(fileOrUrl);
 			}
-    		catch (FileNotFoundException e) 
+    		catch (FileNotFoundException e1) 
     		{
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
     	}
     	
