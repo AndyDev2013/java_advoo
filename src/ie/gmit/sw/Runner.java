@@ -2,6 +2,13 @@ package ie.gmit.sw;
 
 import ie.gmit.sw.ui.UserUI;
 
+/**
+ * This is the basic runner class.
+ * It takes command line arguments to decide whether to us a gui or not
+ * @author Andy Sweeney - G00237144
+ *
+ */
+
 public class Runner 
 {	
 	public static void main(String args[])
@@ -57,6 +64,5 @@ public class Runner
 		System.out.println("          G00237144           ");
 		System.out.println("------------------------------");
 		System.out.println();
-	}
-	
+	}	
 }

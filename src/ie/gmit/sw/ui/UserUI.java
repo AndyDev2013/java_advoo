@@ -15,6 +15,11 @@ import javax.swing.JPanel;
 
 import ie.gmit.sw.Worker;
 
+/**
+ * UserUI manages the creation of the UI version of the program
+ * @author Andy Sweeney - G00237144 
+ * @version 1.0 
+ */
 public class UserUI 
 {
 	private int HI = 140;
@@ -35,11 +40,19 @@ public class UserUI
 	private Label wordCloudLabel;
 	private Label blackListLabel;
 	
+	/**
+	 * Initializes and builds the UI
+	 */
 	public void Init()
 	{
 		BuildUI();
 	}
 	
+	/**
+	 * Initializes the UI given some defaults for the blacklist text field and cloudfile textfield
+	 * @param bl a String containing the file location for the blacklist
+	 * @param cl a String containing the file or url location of the wordcloud
+	 */
 	public void Init(String bl, String cl)
 	{
 		BuildUI();
@@ -47,6 +60,10 @@ public class UserUI
 		txt_wordCloudFileUrl.setText(cl);		
 	}
 	
+	/**
+	 * Creates the UI and adds the actionlisteners for the buttons
+	 * Creating essentially a GUI version of the program
+	 */
 	public void BuildUI()
 	{			
 		jFrame = new JFrame("Word Cloud Application");				
@@ -118,17 +135,28 @@ public class UserUI
 		});
 	}
 	
+	/*
+	 * When the user clicks the OkButton a worker is created similar to the runner when the user passes in the correct arguments through the console.
+	 */
 	public void OkButton()
 	{		
 		Worker worker = new Worker();
 		worker.doWork(getTextFieldBlackListFile(),getTextFieldFile());
 	}	
 	
+	/**
+	 * Gets the text from the wordCloudFile field
+	 * @return a String passed in through the textfield for the wordcloud
+	 */
 	private String getTextFieldFile()
 	{
 		return txt_wordCloudFileUrl.getText();
 	}
 	
+	/**
+	 * Gets the text from the blacListFile field
+	 * @return a String passed in through the textfield for the blacklist
+	 */	
 	private String getTextFieldBlackListFile()
 	{
 		return txt_blackListFileUrl.getText();

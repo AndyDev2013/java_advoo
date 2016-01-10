@@ -16,12 +16,26 @@ import org.jsoup.select.Elements;
 import ie.gmit.sw.ui.UserUIDialog;
 import ie.gmit.sw.ui.UserUIMessageType;
 
-public class Importer implements Parsable
+/**
+ * This class is manages the creation of a list of ordered words.
+ * You can pass in a file or url to create a ordered list of words.
+ * You can create a blacklist for those ordered words to keep common words out.
+ * @author Andy Sweeney - G00237144
+ * @version 1.0
+ */
+public class Importer implements Parserable
 {
 	private WordValueMap wordValueMap;
 	private HashSet<String> blacklist;
 	private int minWordLen = 3;
 	
+	/**
+	* Takes in a file location string.
+	* Method figures out where a file or url is given.
+	* The url or file is parsed in and a sorted and an ordered list of words is returned
+	* @param fileOrUrl String
+	* @return a List of Strings
+	*/ 
 	public List<String> ImportWords(String fileOrUrl)
 	{
     	System.out.println("\n--- WordCloudFile ---");
@@ -55,6 +69,12 @@ public class Importer implements Parsable
 		}
 	}
 	
+	/**
+	* Takes in a file location string.
+	* Creates the blacklist internally for the Importer.
+	* If no file exists a backup internal stopwords file is used.
+	* @param fileUrl String
+	*/ 	
 	public void ImportBlackList(String fileUrl)
 	{
 		System.out.println("--- Blacklist File ---");
@@ -102,6 +122,12 @@ public class Importer implements Parsable
 		} 	
 	}
 	
+	/**
+	* Takes in a file location string.
+	* Method figures out whether the file exists or not.
+	* If not file is at that location then uses the internal stopword.txt
+	* @param fileOrUrl String
+	*/ 	
     private List<String> ReadFile(String fileOrUrl)
     {
     	System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
@@ -153,6 +179,13 @@ public class Importer implements Parsable
 		}	    	
     }	
     
+	/**
+	* Takes in a file location string.
+	* Reads the url using Jsoup
+	* Creates a ordered list of strings for the wordcloud
+	* @param urlLocation String
+	* @return returns an ordered List of Strings for the worldcloud
+	*/     
     public List<String> ReadUrl(String urlLocation)
     {
     	System.out.println("Trying to read URL: " + "\"" + urlLocation + "\"\n");
@@ -207,7 +240,12 @@ public class Importer implements Parsable
 			return ReadFile(urlLocation);
 		} 	
     }
-	
+
+	/**
+	* Takes in a file location string.
+	* @param isFileOrUrl String
+	* @return whether the file location is a file or url
+	*/ 
     public boolean isFileOrUrl(String isFileOrUrl)
 	{
 		boolean isFile = isFile(isFileOrUrl);
@@ -222,7 +260,12 @@ public class Importer implements Parsable
 			return false;
 		}
 	}	
-	
+
+	/**
+	* Takes in a file location string.
+	* @param possibleUrl String
+	* @return figures out if the string is a url using UrlValidator
+	*/ 
 	public boolean isUrl(String possibleUrl)
 	{
 		String[] schemes = {"http","https"};
@@ -235,7 +278,12 @@ public class Importer implements Parsable
 		   return false;
 	
 	}// Tells whether the string is a possible Url or not
-	
+
+	/**
+	* Takes in a file location string.
+	* @param possibleFile String
+	* @return figures out if the string is a file
+	*/ 	
     public boolean isFile(String possibleFile)
 	{
 		File f = new File(possibleFile);
@@ -246,7 +294,12 @@ public class Importer implements Parsable
 			return false;
 		
 	}// Tells whether the string is a file that exists in the directory or not
-    
+  
+	/**
+	* Cleans a string by removing all special characters and converting the word to uppercase.
+	* @param str String
+	* @return an String
+	*/ 	    
     private String CleanStr(String str)
     {
     	if(str != null && str != "" && str.length() > 1)
@@ -261,7 +314,11 @@ public class Importer implements Parsable
     	else    		   	    	
     		return null;
     }
-    
+  
+	/**
+	* Gets the current WorldValueMap which holds the a map of keyvalue pairs with words and their frequency.
+	* @return WordValueMap
+	*/ 	    
     public WordValueMap getWordValueMap()
     {
     	return this.wordValueMap;

@@ -3,6 +3,7 @@ package ie.gmit.sw;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -16,11 +17,23 @@ import ie.gmit.sw.words.Bounds;
 import ie.gmit.sw.words.SingleWordFactory;
 import ie.gmit.sw.words.Wordable;
 
+/**
+ * This class creates the WordCloud image
+ * @author Andy Sweeney - G00237144
+ *
+ * @version 1.0
+ */
 public class WordCloud 
 {		
 	private ArrayList<Bounds> boundsList;
 	private int bufferSpace = 10;
 	
+	/**
+	 * Takes in an arraylist of word, a value map and creates a wordcloud image for the user
+	 * @param words an ArrayList of Strings
+	 * @param worldvaluemap a WorldValueMap containing KeyValue pairs of words and their frequenciess
+	 * @throws IOException throws an ImageWriting exception
+	 */
 	public void CreateWordCloud(ArrayList<String> words, WordValueMap worldvaluemap) throws IOException
 	{
 		System.out.println("Trying to create word cloud");
@@ -106,6 +119,11 @@ public class WordCloud
 		System.out.println("\nFinished: " + wordCount);
 	}
 	
+	/**
+	 * Checks the given Bounds box against the existing words on the page and returns if you can place at that location or not.
+	 * @param checkMe
+	 * @return
+	 */
 	private boolean CanPlaceWord(Bounds checkMe)
 	{		
 		boolean placeable = true;
@@ -131,6 +149,17 @@ public class WordCloud
 			return false;
 	}
 	
+	/**
+	 * Takes a radius and point on that circle and figures out a bounds object for that position.
+	 * Imagine a tiny radius going clockwise and the radius increasing until a valid position is found.
+	 * @param radius
+	 * @param increment
+	 * @param wid
+	 * @param hi
+	 * @param pagewidth
+	 * @param pageheight
+	 * @return
+	 */
 	private Bounds getRandomPositionCircle(int radius,float increment, int wid,int hi,int pagewidth,int pageheight)
 	{			
 		double angle = increment * Math.PI / 180;
