@@ -16,7 +16,7 @@ public class WordValueMap
 	
 	/**
 	 * Lets you add to the WordValueMap
-	 * @param an String
+	 * @param key passing in key 
 	 */
 	public void add(String key)
 	{
@@ -55,7 +55,7 @@ public class WordValueMap
 	
 	/**
 	 * Creates the list of OrderedKeys with a given Hashmap
-	 * @param map takes a HashMap<String,Integer>
+	 * @param map takes a HashMap with String,Integer
 	 * @return ArrayList with orderdKeys as Strings
 	 */
 	public ArrayList<String> getOrderedKeys(HashMap<String,Integer> map)

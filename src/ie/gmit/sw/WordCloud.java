@@ -32,8 +32,9 @@ public class WordCloud
 	 * @param words an ArrayList of Strings
 	 * @param worldvaluemap a WorldValueMap containing KeyValue pairs of words and their frequenciess
 	 * @throws IOException throws an ImageWriting exception
+	 * @return an Boolean
 	 */
-	public void CreateWordCloud(ArrayList<String> words, WordValueMap worldvaluemap) throws IOException
+	public boolean CreateWordCloud(ArrayList<String> words, WordValueMap worldvaluemap) throws IOException
 	{
 		System.out.println("Trying to create word cloud");
 		
@@ -120,6 +121,8 @@ public class WordCloud
 		ImageIO.write(image, "png", new File("image.png"));
 		
 		System.out.println("\nFinished: " + wordCount);
+		
+		return true;
 	}
 	
 	/**

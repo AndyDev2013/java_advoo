@@ -4,41 +4,54 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ie.gmit.sw.Importer;
+
 public class ImporterTest {
 
+	private String file = "dummy";
+	
 	@Test
-	public void testImportWords() {
-		fail("Not yet implemented");
+	public void testImportWords()
+	{	
+		Importer importer = new Importer();
+		
+		assertNotNull(importer.ImportWords(file));
 	}
 
 	@Test
-	public void testImportBlackList() {
-		fail("Not yet implemented");
+	public void testIsFileOrUrl() 
+	{
+		Importer importer = new Importer();
+		
+		assertFalse(importer.isFileOrUrl(file));
 	}
 
 	@Test
-	public void testReadUrl() {
-		fail("Not yet implemented");
+	public void testIsUrl()
+	{
+		Importer importer = new Importer();
+		
+		assertFalse(importer.isUrl(file));
 	}
 
 	@Test
-	public void testIsFileOrUrl() {
-		fail("Not yet implemented");
+	public void testIsFile() 
+	{
+		Importer importer = new Importer();
+		
+		assertFalse(importer.isFile(file));
 	}
 
 	@Test
-	public void testIsUrl() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testIsFile() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetWordValueMap() {
-		fail("Not yet implemented");
+	public void testGetWordValueMap()
+	{
+		Importer importer = new Importer();
+		
+		importer = new Importer();		
+		importer.ImportBlackList(file);
+		importer.ImportWords(file);	
+		
+		assertNotNull(importer.getWordValueMap());
 	}
 
 }

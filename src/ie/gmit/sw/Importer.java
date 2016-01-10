@@ -18,7 +18,6 @@ import org.jsoup.select.Elements;
 
 import ie.gmit.sw.ui.UserUIDialog;
 import ie.gmit.sw.ui.UserUIMessageType;
-import jdk.nashorn.internal.objects.Global;
 
 /**
  * This class is manages the creation of a list of ordered words.
