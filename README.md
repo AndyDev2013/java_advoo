@@ -1,5 +1,7 @@
-# Wordcloud usin JSoup, Java and OOP
+# Wordcloud using JSoup, Java and OOP
 Advanced OO project assignment for college.
+
+# RUNNABLE JAR IN THE DIST FOLDER
 
 ![Screenshot](http://puu.sh/mqW5Q/fca844b844.png)
 
@@ -19,7 +21,7 @@ The goal of the assignment was to create a jar file that you could pass in a wor
 
 The runnable jar requires 3 arguments
 
-```<ui> <wordfilelocationstring> <blacklistfilelocationstring>``` 
+```<ui> <blacklistfilelocationstring> <wordfilelocationstring> ``` 
 
 You can choose between ```gui``` or ```cmd``` to have either a command line or gui interface for the ```<ui>``` field.
 
@@ -29,9 +31,9 @@ Finally for the ```<blacklistfilelocationstring>``` parameter you can either pas
 
 Examples
 
-```cmd warandpeace.txt stopwords.txt```
+```cmd stopwords.txt  warandpeace.txt ```
 
-```gui www.independent.ie stopwords.txt```
+```gui stopwords.txt http://www.independent.ie/```
 
 If you have no files to pass in you can pass dummy arguments
 
@@ -39,7 +41,7 @@ If you have no files to pass in you can pass dummy arguments
 
 Below is an example for running the whole program
 
-```java -jar WordCloud.jar cmd www.independent.ie C:Users\User\Desktop\stopfiles.txt```
+```java -jar WordCloud.jar cmd C:Users\User\Desktop\stopfiles.txt http://www.independent.ie/```
 
 # Libaries Used
 
