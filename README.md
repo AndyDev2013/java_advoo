@@ -43,6 +43,10 @@ Below is an example for running the whole program
 
 ```java -jar WordCloud.jar cmd C:Users\User\Desktop\stopfiles.txt http://www.independent.ie/```
 
+# Future Changes
+
+I hope to clean up the file importing so you dont have to compile the source to a runnable jar to run it.
+
 # Libaries Used
 
 * commons-validator-1.5.0
