@@ -53,7 +53,7 @@ public class UserUI
 	 * @param bl a String containing the file location for the blacklist
 	 * @param cl a String containing the file or url location of the wordcloud
 	 */
-	public void Init(String cl,String bl)
+	public void Init(String bl,String cl)
 	{
 		BuildUI();
 		txt_blackListFileUrl.setText(bl);
@@ -153,6 +153,9 @@ public class UserUI
 	 */
 	private String getTextFieldFile()
 	{
+		if(txt_wordCloudFileUrl.getText().equals(""))
+			return "Empty text";
+		
 		return txt_wordCloudFileUrl.getText();
 	}
 	
@@ -162,6 +165,9 @@ public class UserUI
 	 */	
 	private String getTextFieldBlackListFile()
 	{
+		if(txt_blackListFileUrl.getText().equals(""))
+			return "Empty text";
+				
 		return txt_blackListFileUrl.getText();
 	}
 }

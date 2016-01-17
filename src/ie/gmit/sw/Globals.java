@@ -11,16 +11,17 @@ public class Globals
    private static Globals instance = null;
    protected Globals() {}
  
-   private boolean DEBUG = false; // Debug mode represents the code being run from eclipse otherwise its run from jar
+   private boolean isPackagedRunnable = true; // Debug mode represents the code being run from eclipse otherwise its run from jar
    private boolean GUI = false;
    
-   private String backUpStopwords = "txt/stopwords.txt";
-   private String backUpWordCloud = "txt/warandpeace.txt";
+   private String backupStopwordsInternal = "/txt/stopwords.txt";
+   private String backUpWordCloudInternal = "/txt/warandpeace.txt";
    
-   private int WordLimit = 80;
+   private int WordLimit = 70;
    private int fontSize = 200;
-   private int ImageDimension = 2500;
+   private int ImageDimension = 3000;
    private int minFontSize = 10;
+   private int minWordLen = 3;
 
    /**
    * Returns the singleton instance of Globals.
@@ -35,6 +36,42 @@ public class Globals
   
 		return instance;
     }	
+	
+	/**
+	* Returns the Backup Stopwords Location
+	* @return an String
+	*/  
+	public String getBackupStopwordsInternal() 
+	{
+		return backupStopwordsInternal;
+	}
+
+	/**
+	* Returns the Backup Cloudwords Location
+	* @return an String
+	*/  
+	public String getBackUpWordCloudInternal()
+	{
+		return backUpWordCloudInternal;
+	}
+
+	/**
+	* Returns the minimum word size.
+	* @return an int
+	*/  
+	public int getMinWordLen()
+	{
+		return minWordLen;
+	}
+
+	/**
+	* Sets the minimum word size.
+	* @param minWordLen int
+	*/
+	public void setMinWordLen(int minWordLen)
+	{
+		this.minWordLen = minWordLen;
+	}
 
 	/**
 	* Returns the minimum font size.
@@ -94,9 +131,9 @@ public class Globals
 	* Sets whether the runner is in DEBUG mode or not
 	* @param debug boolean
 	*/  
-	public void setIsDebug(boolean debug)
+	public void setIsPackagedRunnable(boolean debug)
     {
-  	   this.DEBUG = debug;
+  	   this.isPackagedRunnable = debug;
     }
    
 	/**
@@ -112,9 +149,9 @@ public class Globals
 	* Returns whether the runner is in DEBUG mode or not
 	* @return an int
 	*/  
-    public boolean getIsDebug()
+    public boolean getIsPackagedRunnable()
     {
-	    return this.DEBUG;
+	    return this.isPackagedRunnable;
     }
    
 	/**
@@ -133,23 +170,5 @@ public class Globals
     public int getWordLimit()
     {
 	    return this.WordLimit;
-    }
-   
-    /**
-    * Returns the location of the backup stop words file
-    * @return an String
-    */       
-    public String getBackupStopwords()
-    {
- 	   return this.backUpStopwords;
-    }
-
-    /**
-    * Returns the location of the backup wordcloud file
-    * @return an String
-    */     
-    public String getBackupWordCloud()
-    {
-	    return this.backUpWordCloud;
     }
 }

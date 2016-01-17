@@ -30,7 +30,6 @@ public class Importer implements Parserable
 {
 	private WordValueMap wordValueMap;
 	private HashSet<String> blacklist;
-	private int minWordLen = 3;
 	
 	/**
 	* Takes in a file location string.
@@ -46,28 +45,12 @@ public class Importer implements Parserable
 		
 		wordValueMap = new WordValueMap();
 		
-		if(isFileOrUrl(fileOrUrl))
+		if(isUrl(fileOrUrl))
 		{
-			if(isFile(fileOrUrl))
-				return ReadFile(fileOrUrl);
-			else
-				return ReadUrl(fileOrUrl);
+			return ReadUrl(fileOrUrl);
 		}	
 		else
-		{
-			String message = "WordCloud file/url isn't valid.";
-			String otherMessage;
-			
-			fileOrUrl = Globals.getInstance().getBackupWordCloud();
-			
-			otherMessage = "Using the internal backup file: " + "\"" + fileOrUrl + "\"\n";
-				
-			System.out.println(message);
-			System.out.println(otherMessage);
-			
-			if(Globals.getInstance().getIsGui())
-				new UserUIDialog(message + "\n" + otherMessage, UserUIMessageType.WARNING);
-		
+		{	
 			return ReadFile(fileOrUrl);
 		}
 	}
@@ -80,7 +63,7 @@ public class Importer implements Parserable
 	*/ 	
 	public void ImportBlackList(String fileUrl)
 	{
-		System.out.println("--- Blacklist File ---");
+		System.out.println("\n--- Blacklist File ---");
 		System.out.println("\nTrying to import blacklist file: " + "\"" + fileUrl + "\"");
 		
 		Reader currentReader = null;
@@ -99,16 +82,21 @@ public class Importer implements Parserable
 		}
 		else
 		{
-			if(!(Globals.getInstance().getIsDebug()))
+			if(Globals.getInstance().getIsPackagedRunnable())
 	    	{
+				System.out.println("Packaged runnable - using different streamreader");
+				
 	    		ClassLoader classLoader = getClass().getClassLoader();
 	    		
 	        	if(classLoader.getResourceAsStream(fileUrl) != null) 		
+	        	{
 	    			currentReader = new InputStreamReader(getClass().getResourceAsStream(fileUrl)); 
+	        	}
 	    		else
 	    		{
-	    			System.out.println("Using the internal backup file : " + "\"" + fileUrl + "\"\n");
-	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
+	    			System.out.println("Using the internal backup file : " + "\"" + Globals.getInstance().getBackupStopwordsInternal() + "\"\n");
+	    			fileUrl = Globals.getInstance().getBackupStopwordsInternal();
+	    			currentReader = new InputStreamReader(getClass().getResourceAsStream(Globals.getInstance().getBackupStopwordsInternal()));
 	    		}
 	    	}
 	    	else
@@ -116,17 +104,30 @@ public class Importer implements Parserable
 	    		try 
 	    		{    			
 	    			System.out.println("Regular File Reader");
-					currentReader = new FileReader(fileUrl);
-					
-					if(!(isFile(fileUrl)))
+	    			
+					if(!isFile(fileUrl))
 					{
-						fileUrl = Globals.getInstance().getBackupStopwords();
+						System.out.println("Backup stop words");
+						
+						fileUrl = Globals.getInstance().getBackupStopwordsInternal();
 						
 						System.out.println("Using the internal backup file: " + "\"" + fileUrl + "\"\n");
+						
+						isFile(fileUrl);
+						
+						currentReader = new FileReader(fileUrl);
+					}
+					else
+					{
+						System.out.println("File exists creating filereader for it");
+						
+		    			currentReader = new FileReader(fileUrl);
 					}
 				}
 	    		catch (FileNotFoundException e)
-	    		{}   		
+	    		{
+	    			System.out.println("Something wrong creating filereader");
+	    		}   		
 	    	}			
 			
 		}
@@ -177,52 +178,25 @@ public class Importer implements Parserable
 	* If not file is at that location then uses the internal stopword.txt
 	* @param fileOrUrl String
 	*/ 	
-    private List<String> ReadFile(String fileOrUrl)
+    private List<String> ReadFile(String file)
     {
     	Reader currentReader = null;
-    	
-    	if(!isFile(fileOrUrl))
-    	{
-    	
-	    	if(!(Globals.getInstance().getIsDebug()))
-	    	{
-	    		ClassLoader classLoader = getClass().getClassLoader();
-	    		
-	    		if(classLoader.getResourceAsStream(fileOrUrl) != null) 		
-	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + fileOrUrl)); 
-	    		else
-	    			currentReader = new InputStreamReader(getClass().getResourceAsStream("/" + Globals.getInstance().getBackupStopwords()));
-	    	}
-	    	else
-	    	{
-	    		System.out.println("Trying to read FILE: " + "\"" + fileOrUrl + "\"\n");
-	    		
-	    		try
-	    		{
-					currentReader = new FileReader(fileOrUrl);
-				}
-	    		catch (FileNotFoundException e) 
-	    		{
-					e.printStackTrace();
-				}
-	    	}
-    	} 
-    	else
-    	{
-			try
-    		{
-				currentReader = new FileReader(fileOrUrl);
-			}
-    		catch (FileNotFoundException e1) 
-    		{
-				e1.printStackTrace();
-			}
-    	}
+    	 
+		ClassLoader classLoader = getClass().getClassLoader();
+		
+		if(classLoader.getResourceAsStream(file) != null) 		
+		{
+			System.out.println("Reading file: " + file);
+			currentReader = new InputStreamReader(getClass().getResourceAsStream(file)); 
+		}
+		else
+		{
+			System.out.println("Using the internal backup file : " + "\"" + Globals.getInstance().getBackUpWordCloudInternal() + "\"\n");
+			currentReader = new InputStreamReader(getClass().getResourceAsStream(Globals.getInstance().getBackUpWordCloudInternal()));
+		}
     	
     	try (BufferedReader buffRead = new BufferedReader(currentReader))
-		{
-    		System.out.println("Read file: " + fileOrUrl);
-    		
+		{    		
 			String currentLine;
 
 			while ((currentLine = buffRead.readLine()) != null)
@@ -239,11 +213,9 @@ public class Importer implements Parserable
 						 
 						 if(blacklist != null)
 						 {
-							 if(!(blacklist.contains(word)) && word.length() > minWordLen)					 
+							 if(!(blacklist.contains(word)) && word.length() > Globals.getInstance().getMinWordLen())					 
 								 wordValueMap.add(word);
 						 }
-						 else
-							 wordValueMap.add(word); 
 					 }
 				 }
 			}
@@ -254,22 +226,9 @@ public class Importer implements Parserable
 		} 
     	catch (IOException e) 
     	{
-			String message = "WordCloud file/url isn't valid.";
-			String otherMessage;
-			
-			fileOrUrl = Globals.getInstance().getBackupWordCloud();
-			
-			otherMessage = "Using the internal backup file: " + "\"" + fileOrUrl + "\"\n";
-				
-			System.out.println(message);
-			System.out.println(otherMessage);
-			
-			ReadFile(fileOrUrl);
-			
-			if(Globals.getInstance().getIsGui())
-				new UserUIDialog(message + "\n" + otherMessage, UserUIMessageType.WARNING);
-			
-			return wordValueMap.getOrderedList(); 
+			System.out.println("Error reading external wordcloud file and internal file"); 
+
+			return null;
 		}	    	
     }	
     
@@ -304,7 +263,7 @@ public class Importer implements Parserable
 					 {						 
 						 if(blacklist != null)
 						 {
-							 if(!(blacklist.contains(word)) && !word.equals(""))					 
+							 if(!(blacklist.contains(word)) && !word.equals("") && word.length() > Globals.getInstance().getMinWordLen())					 
 								 wordValueMap.add(word);
 						 }
 						 else
@@ -322,9 +281,9 @@ public class Importer implements Parserable
     		String message = "Unable to read url";
     		String otherMessage;
 
-    		urlLocation = Globals.getInstance().getBackupWordCloud();
+    		urlLocation = Globals.getInstance().getBackUpWordCloudInternal();
     		
-    		otherMessage = "Using the internal backup file: " + "\"" + urlLocation + "\"\n";    		
+    		otherMessage = "Using the internal backup file " + "\"" + urlLocation + "\"\n";    		
     		
 			if(Globals.getInstance().getIsGui())
 				new UserUIDialog(message + "\n" + otherMessage,UserUIMessageType.ERROR);
@@ -382,10 +341,21 @@ public class Importer implements Parserable
 	{
 		File f = new File(possibleFile);
 		
-		if(f.exists() && !f.isDirectory()) 
+		if(f.exists() && !f.isDirectory() && f.isFile() && f.canRead()) 
 		    return true;
 		else
+		{
+			if(!f.exists())
+				System.out.println("\"" + possibleFile + "\"" + " file doesn't exist");
+			if(f.isDirectory())
+				System.out.println("\"" + possibleFile + "\"" + " file is actually a directory");
+			if(f.isFile())
+				System.out.println("\"" + possibleFile + "\"" + " file is not a file");
+			if(!f.canRead())
+				System.out.println("\"" + possibleFile + "\"" + " file cannot be read");
+			
 			return false;
+		}
 		
 	}// Tells whether the string is a file that exists in the directory or not
   

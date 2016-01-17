@@ -118,7 +118,7 @@ public class WordCloud
 	
 		plaingraphics.dispose();
 		
-		ImageIO.write(image, "png", new File("image.png"));
+		ImageIO.write(image, "png", new File("WordCloud.png"));
 		
 		System.out.println("\nFinished: " + wordCount);
 		

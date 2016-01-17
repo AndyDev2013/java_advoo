@@ -13,7 +13,7 @@ public class Runner
 {	
 	public static void main(String args[])
 	{	
-		if(Globals.getInstance().getIsDebug())
+		if(!Globals.getInstance().getIsPackagedRunnable())
 		{
 			UserUI projectUI = new UserUI();
 			projectUI.Init();		
@@ -44,15 +44,20 @@ public class Runner
 					Globals.getInstance().setIsGui(false);
 					
 					Worker worker = new Worker();
-					worker.doWork(args[1],args[2]);
-					
+					worker.doWork(args[1],args[2]);					
 				}
 			}
 			else
 			{
+				System.out.println();
 				System.out.println("Wrong amount of parameters passed.");
+				System.out.println("Please pass parameters as follows: ");
+				System.out.println("<cmd> or <gui> followed by <blacklistfile> <wordcloudfile>");
+				System.out.println("Example: \"java -jar wordcloud.jar gui stopwords.txt wordcloud.txt\"");
+				System.out.println("Example: \"java -jar wordcloud.jar cmd stopwords.txt http://www.independent.ie/\"");
+				System.out.println();
 			}
-		}		
+		}
 	}	
 	
 	private static void commandLineText()
