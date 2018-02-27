@@ -47,6 +47,7 @@ Below is an example for running the whole program
 
 # Further Usage
 
+```
 C:>java -jar wordcloud.jar cmd default "http://www.independent.co.uk/us"
 ------------------------------
   Word Cloud API - 2015/2016
@@ -63,6 +64,7 @@ Trying to read URL: "http://www.independent.co.uk/us"
 Populated Map: 1281
 Trying to create the wordcloud
 Wordcloud created @ wordcloud-20180227_172400.png
+```
 
 # Libaries Used
 
