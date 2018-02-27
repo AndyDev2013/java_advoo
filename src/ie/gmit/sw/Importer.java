@@ -40,9 +40,6 @@ public class Importer implements Parserable
 	*/ 
 	public List<String> ImportWords(String fileOrUrl)
 	{
-    	System.out.println("\n--- WordCloudFile ---");
-		System.out.println("\nTrying to import wordcloud file: " + "\"" + fileOrUrl + "\"");
-		
 		wordValueMap = new WordValueMap();
 		
 		if(isUrl(fileOrUrl))
@@ -63,8 +60,7 @@ public class Importer implements Parserable
 	*/ 	
 	public void ImportBlackList(String fileUrl)
 	{
-		System.out.println("\n--- Blacklist File ---");
-		System.out.println("\nTrying to import blacklist file: " + "\"" + fileUrl + "\"");
+		System.out.println("Trying to import blacklist file: " + "\"" + fileUrl + "\"");
 		
 		Reader currentReader = null;
 		blacklist = new HashSet<String>();	
@@ -84,8 +80,6 @@ public class Importer implements Parserable
 		{
 			if(Globals.getInstance().getIsPackagedRunnable())
 	    	{
-				System.out.println("Packaged runnable - using different streamreader");
-				
 	    		ClassLoader classLoader = getClass().getClassLoader();
 	    		
 	        	if(classLoader.getResourceAsStream(fileUrl) != null) 		
@@ -158,8 +152,6 @@ public class Importer implements Parserable
 					 }
 				 }
 			}
-			
-			System.out.println("Populated Blacklist: " + blacklist.size());
 		} 
     	catch (IOException e) 
     	{
@@ -219,9 +211,7 @@ public class Importer implements Parserable
 					 }
 				 }
 			}
-			
-			System.out.println("Populated Map: " + wordValueMap.size());
-			
+				
 			return wordValueMap.getOrderedList();
 		} 
     	catch (IOException e) 

@@ -24,9 +24,6 @@ public class Worker
 	 */
 	public void doWork(String fileToBlackList, String fileOrUrl)
 	{
-		System.out.println("Blacklist file passed to worker: " + fileToBlackList);
-		System.out.println("Wordcloud fileurl passed to worker: " + fileOrUrl);
-		
 		importer = new Importer();		
 		importer.ImportBlackList(fileToBlackList);
 		importer.ImportWords(fileOrUrl);	

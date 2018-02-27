@@ -1,11 +1,11 @@
-package ie.gmit.sw;
+ package ie.gmit.sw;
 
 import ie.gmit.sw.ui.UserUI;
 
 /**
  * This is the basic runner class.
  * It takes command line arguments to decide whether to us a gui or not
- * @author Andy Sweeney - G00237144
+ * @author SoftDevAndy
  *
  */
 
@@ -62,12 +62,9 @@ public class Runner
 	
 	private static void commandLineText()
 	{
-		System.out.println();
 		System.out.println("------------------------------");
 		System.out.println("  Word Cloud API - 2015/2016  ");
-		System.out.println("        Andrew Sweeney        ");
-		System.out.println("          G00237144           ");
+		System.out.println("        SoftDevAndy        ");
 		System.out.println("------------------------------");
-		System.out.println();
 	}	
 }

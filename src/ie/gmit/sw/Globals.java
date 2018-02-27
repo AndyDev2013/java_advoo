@@ -2,9 +2,9 @@ package ie.gmit.sw;
 
 /**
  * This class is an example of a Singleton. It's created to hold most of the global variables used in the project
- * @author Andy Sweeney - G00237144
+ * @author SoftDevAndy
  *
- * @version 1.0
+ * @version 1.1
  */
 public class Globals 
 {	

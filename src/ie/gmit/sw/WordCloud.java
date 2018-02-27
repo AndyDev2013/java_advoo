@@ -8,7 +8,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 
@@ -36,7 +38,7 @@ public class WordCloud
 	 */
 	public boolean CreateWordCloud(ArrayList<String> words, WordValueMap worldvaluemap) throws IOException
 	{
-		System.out.println("Trying to create word cloud");
+		System.out.println("Trying to create the wordcloud");
 		
 		BufferedImage image = new BufferedImage(Globals.getInstance().getImageDimension(), Globals.getInstance().getImageDimension(), BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics plaingraphics = image.getGraphics();	
@@ -54,8 +56,6 @@ public class WordCloud
 		int radius = 0;
 		int lastFrequency = 0;
 		float increment = 0;
-		
-		System.out.println();
 		
 		while(wordCount < Globals.getInstance().getWordLimit() && Globals.getInstance().getFontSize() > Globals.getInstance().getMinFontSize())
 		{
@@ -111,16 +111,18 @@ public class WordCloud
 										
 			Globals.getInstance().setFontSize(fSize);
 			
-			System.out.println("Printing word: " + word.getText());
-			
 			++wordCount;
 		}		
 	
 		plaingraphics.dispose();
+		  		
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());	
+		String fileName = "wordcloud-" + timeStamp + ".png";
+		File f = new File(fileName);
 		
-		ImageIO.write(image, "png", new File("WordCloud.png"));
+		ImageIO.write(image, "png", f);
 		
-		System.out.println("\nFinished: " + wordCount);
+		System.out.println("Wordcloud created @ " + fileName);
 		
 		return true;
 	}
