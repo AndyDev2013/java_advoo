@@ -5,15 +5,15 @@ Wordcloud using JSoup, Java and OOP, Advanced OO project assignment for college.
 
 <img src="https://puu.sh/zx4WH/b24db7b678.png" width="300px" height="300px">
 
-# About
+## About
 
 This project was created as part of a fourth year project to demontrate OO principals and design patterns. The entire project was coded using Java.
 
-# What does the project do?
+## What does the project do?
 
 The goal of the assignment was to create a jar file that you could pass in a wordfile or url with a list of words for a wordcloud. You could also parse in a blacklist file to keep common words out of the word cloud.
 
-# How to run
+## How to run
 
 * Get a copy of the runnable jar.
 * Navigate to it using the command line.  
@@ -43,7 +43,7 @@ Below is an example for running the whole program
 
 ```java -jar WordCloud.jar cmd C:Users\User\Desktop\stopfiles.txt http://www.independent.ie/```
 
-# Further Usage
+## Further Usage
 
 ```
 C:>java -jar wordcloud.jar cmd default "http://www.independent.co.uk/us"
@@ -64,7 +64,7 @@ Trying to create the wordcloud
 Wordcloud created @ wordcloud-20180227_172400.png
 ```
 
-# Libaries Used
+## Libaries Used
 
 * commons-validator-1.5.0
 * jsoup-1.8.3
