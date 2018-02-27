@@ -3,7 +3,7 @@
 
 Wordcloud using JSoup, Java and OOP, Advanced OO project assignment for college.
 
-# RUNNABLE JAR IN THE DIST FOLDER
+* Runnable jar file in the dist folder.
 
 # About
 
