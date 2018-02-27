@@ -3,6 +3,8 @@
 
 Wordcloud using JSoup, Java and OOP, Advanced OO project assignment for college.
 
+<img src="https://puu.sh/zx4WH/b24db7b678.png" width="300px" height="300px">
+
 * Runnable jar file in the dist folder.
 
 # About
@@ -43,9 +45,24 @@ Below is an example for running the whole program
 
 ```java -jar WordCloud.jar cmd C:Users\User\Desktop\stopfiles.txt http://www.independent.ie/```
 
-# Future Changes
+# Further Usage
 
-I hope to clean up the file importing so you dont have to compile the source to a runnable jar to run it.
+C:>java -jar wordcloud.jar cmd default "http://www.independent.co.uk/us"
+------------------------------
+  Word Cloud API - 2015/2016
+        SoftDevAndy
+------------------------------
+Trying to import blacklist file: "default"
+"default" file doesn't exist
+"default" file cannot be read
+Using the internal backup file : "/txt/stopwords.txt"
+
+Read file for blacklist: /txt/stopwords.txt
+Trying to read URL: "http://www.independent.co.uk/us"
+
+Populated Map: 1281
+Trying to create the wordcloud
+Wordcloud created @ wordcloud-20180227_172400.png
 
 # Libaries Used
 
