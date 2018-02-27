@@ -5,8 +5,6 @@ Wordcloud using JSoup, Java and OOP, Advanced OO project assignment for college.
 
 <img src="https://puu.sh/zx4WH/b24db7b678.png" width="300px" height="300px">
 
-* Runnable jar file in the dist folder.
-
 # About
 
 This project was created as part of a fourth year project to demontrate OO principals and design patterns. The entire project was coded using Java.
